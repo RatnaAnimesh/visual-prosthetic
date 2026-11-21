@@ -1,0 +1,12 @@
+
+=== encoder
+  single-electrode table: 24 x 24 runs in 680s
+  target 1: fidelity indep 1.000 -> on full 0.985, re-optimised 0.994; contrast 0.95 (mse 0.97); 1278 runs, 2451s
+  target 2: fidelity indep 1.000 -> on full 0.988, re-optimised 0.988; contrast 0.93 (mse 0.98); 478 runs, 465s
+  target 3: fidelity indep 1.000 -> on full 0.981, re-optimised 0.998; contrast 0.79 (mse 0.91); 1053 runs, 698s
+  target 4: fidelity indep 1.000 -> on full 0.990, re-optimised 0.993; contrast 1.00 (mse 0.98); 1378 runs, 871s
+  target 5: fidelity indep 1.000 -> on full 0.959, re-optimised 0.984; contrast 0.88 (mse 0.90); 828 runs, 548s
+  target 6: fidelity indep 1.000 -> on full 0.990, re-optimised 0.996; contrast 0.90 (mse 0.98); 1303 runs, 1007s
+  mean indep_on_indep 1.000  indep_on_full 0.982  full_on_full 0.992  contrast_ratio_mismatched 0.909  contrast_ratio_matched 0.751  contrast_ratio_mse 0.954  fidelity_mse 0.984  fraction_lost 0.010
+wrote results/v2_paper_encoder.json
+  (6720s)

@@ -1,0 +1,109 @@
+{
+  "separations_um": [
+    400.0,
+    565.685424949238,
+    800.0,
+    1200.0,
+    1600.0,
+    2000.0,
+    2400.0,
+    3200.0,
+    4525.483399593904
+  ],
+  "curve_pooled": [
+    18.01979791558886,
+    15.960996953813227,
+    14.916435327026404,
+    22.12782646999976,
+    24.69751873335601,
+    21.848899919259903,
+    17.00388733576569,
+    7.993620105570441,
+    1.394423801047181
+  ],
+  "curve_measured": [
+    30.677918713241787,
+    26.598491586687583,
+    21.975950036563713,
+    11.43536295824153,
+    5.975174632282576,
+    4.621654696505766,
+    3.409482714132888,
+    1.0946518862444663,
+    0.14279130287386174
+  ],
+  "shape_correlation": 0.26196132940972183,
+  "rows": [
+    {
+      "sem_pp": 10.0,
+      "power_if_measured": 0.958,
+      "power_if_pooled": 0.96775
+    },
+    {
+      "sem_pp": 20.0,
+      "power_if_measured": 0.7965,
+      "power_if_pooled": 0.81925
+    },
+    {
+      "sem_pp": 30.0,
+      "power_if_measured": 0.68575,
+      "power_if_pooled": 0.718
+    },
+    {
+      "sem_pp": 50.0,
+      "power_if_measured": 0.58425,
+      "power_if_pooled": 0.60625
+    },
+    {
+      "sem_pp": 75.0,
+      "power_if_measured": 0.5555,
+      "power_if_pooled": 0.5395
+    },
+    {
+      "sem_pp": 100.0,
+      "power_if_measured": 0.54025,
+      "power_if_pooled": 0.516
+    },
+    {
+      "sem_pp": 150.0,
+      "power_if_measured": 0.521,
+      "power_if_pooled": 0.502
+    },
+    {
+      "sem_pp": 200.0,
+      "power_if_measured": 0.517,
+      "power_if_pooled": 0.494
+    }
+  ],
+  "sem_tolerance_pp": 20.0,
+  "reduced_protocols": {
+    "all": 20.0,
+    "0.4/1.6/3.2 mm": 20.0
+  },
+  "drift_confound": [
+    {
+      "drift": 0.0,
+      "power_if_pooled": 0.8203333333333334
+    },
+    {
+      "drift": 0.1,
+      "power_if_pooled": 0.798
+    },
+    {
+      "drift": 0.2,
+      "power_if_pooled": 0.7623333333333333
+    },
+    {
+      "drift": 0.3,
+      "power_if_pooled": 0.739
+    },
+    {
+      "drift": 0.5,
+      "power_if_pooled": 0.688
+    },
+    {
+      "drift": 0.7,
+      "power_if_pooled": 0.598
+    }
+  ]
+}

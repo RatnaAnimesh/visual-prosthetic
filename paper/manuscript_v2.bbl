@@ -1,0 +1,203 @@
+\begin{thebibliography}{32}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Fern{\'a}ndez et~al.(2019)]{fernandez2019}
+E.~Fern{\'a}ndez et~al.
+\newblock Phosphene perceptions and safety of chronic visual cortex stimulation
+  in a blind subject, 2019.
+\newblock \url{https://pubmed.ncbi.nlm.nih.gov/31151104/}.
+
+\bibitem[nct(n.d{\natexlab{a}})]{nct02983370}
+Development of a {C}ortical {V}isual {N}europrosthesis for the {B}lind.
+\newblock ClinicalTrials.gov NCT02983370, n.d{\natexlab{a}}.
+
+\bibitem[nct(n.d{\natexlab{b}})]{nct04634383}
+A {P}hase {I} feasibility study of an {I}ntracortical {V}isual {P}rosthesis
+  ({ICVP}) for people with blindness.
+\newblock ClinicalTrials.gov NCT04634383, n.d{\natexlab{b}}.
+
+\bibitem[Grani et~al.(2025)Grani, Soto-S{\'a}nchez, Rodil~Doblado, Lopez~Peco,
+  Gonzalez-Lopez, and Fernandez]{scienceadv2025}
+Fabrizio Grani, Cristina Soto-S{\'a}nchez, Alfonso Rodil~Doblado, Rocio
+  Lopez~Peco, Pablo Gonzalez-Lopez, and Eduardo Fernandez.
+\newblock Neural correlates of phosphene perception in blind individuals: a
+  step toward a bidirectional cortical visual prosthesis.
+\newblock \emph{Science Advances}, 11\penalty0 (45):\penalty0 eadv8846, 2025.
+\newblock \doi{10.1126/sciadv.adv8846}.
+
+\bibitem[Granley et~al.(2022)]{granley2022}
+J.~Granley et~al.
+\newblock Deep learning-based perceptual stimulus encoder for bionic vision,
+  2022.
+\newblock
+  \url{https://bionicvisionlab.org/publications/2022-03-deep-stimulus-encoder/}.
+
+\bibitem[de~Ruyter~van Steveninck et~al.(2022)]{deruyter2022}
+J.~de~Ruyter~van Steveninck et~al.
+\newblock End-to-end optimization of prosthetic vision, 2022.
+\newblock \url{https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8899855/}.
+
+\bibitem[rl2(2022)]{rl2022}
+Optimization of neuroprosthetic vision via end-to-end deep reinforcement
+  learning, 2022.
+\newblock \url{https://pubmed.ncbi.nlm.nih.gov/36328967/}.
+
+\bibitem[e2e(2025)]{e2e2025}
+End-to-end learning of safe stimulation parameters for cortical neuroprosthetic
+  vision, 2025.
+\newblock \url{https://www.biorxiv.org/content/10.1101/2025.01.23.634543}.
+
+\bibitem[van~der Grinten et~al.(2023)]{vandergrinten2023}
+M.~van~der Grinten et~al.
+\newblock Towards biologically plausible phosphene simulation for the
+  differentiable optimization of visual cortical prostheses.
+\newblock \emph{eLife}, 2023.
+\newblock \url{https://elifesciences.org/articles/85812}.
+
+\bibitem[Beyeler et~al.(2023)]{beyeler}
+M.~Beyeler et~al.
+\newblock pulse2percept: a python-based simulation framework for bionic vision,
+  2023.
+\newblock \url{https://bionicvisionlab.org/code/pulse2percept/}.
+
+\bibitem[Bosking et~al.(2022)]{bosking2022}
+W.~H. Bosking et~al.
+\newblock Percepts evoked by multi-electrode stimulation of human visual
+  cortex.
+\newblock \emph{Brain Stimulation}, 2022.
+\newblock \url{https://pmc.ncbi.nlm.nih.gov/articles/PMC9831085/}.
+
+\bibitem[Horsager et~al.(2010)Horsager, Greenberg, and Fine]{horsager2010}
+A.~Horsager, R.~J. Greenberg, and I.~Fine.
+\newblock Spatiotemporal interactions in retinal prosthesis subjects.
+\newblock \emph{Investigative Ophthalmology \& Visual Science}, 51:\penalty0
+  1223--1233, 2010.
+
+\bibitem[Horsager et~al.(2011)Horsager, Boynton, Greenberg, and
+  Fine]{horsager2011}
+A.~Horsager, G.~M. Boynton, R.~J. Greenberg, and I.~Fine.
+\newblock Temporal interactions during paired-electrode stimulation in two
+  retinal prosthesis subjects.
+\newblock \emph{Investigative Ophthalmology \& Visual Science}, 52:\penalty0
+  549--557, 2011.
+
+\bibitem[Armenta~Salas et~al.(2022)]{armentasalas2022}
+M.~Armenta~Salas et~al.
+\newblock Sequence of visual cortex stimulation affects phosphene brightness in
+  blind subjects.
+\newblock \emph{Brain Stimulation}, 15:\penalty0 605--614, 2022.
+
+\bibitem[Fine and Boynton(2024)]{fineboynton2024}
+I.~Fine and G.~M. Boynton.
+\newblock A virtual patient simulation modeling the neural and perceptual
+  effects of human visual cortical stimulation, from pulse trains to percepts.
+\newblock \emph{Scientific Reports}, 14:\penalty0 17400, 2024.
+\newblock \doi{10.1038/s41598-024-65337-1}.
+
+\bibitem[Gilbert and Wiesel(1983)]{gilbert1983}
+C.~D. Gilbert and T.~N. Wiesel.
+\newblock Clustered intrinsic connections in cat visual cortex.
+\newblock \emph{Journal of Neuroscience}, 3:\penalty0 1116--1133, 1983.
+
+\bibitem[Kandel et~al.(2013)]{kandel2013}
+E.~R. Kandel et~al.
+\newblock \emph{Principles of Neural Science}.
+\newblock McGraw-Hill, 5th edition, 2013.
+
+\bibitem[Histed et~al.(2009)Histed, Bonin, and Reid]{histed2009}
+M.~H. Histed, V.~Bonin, and R.~C. Reid.
+\newblock Direct activation of sparse, distributed populations of cortical
+  neurons by electrical microstimulation.
+\newblock \emph{Neuron}, 63:\penalty0 508--522, 2009.
+
+\bibitem[Kumaravelu et~al.(2022)Kumaravelu, Sombeck, Miller, Bensmaia, and
+  Grill]{kumaravelu2022}
+K.~Kumaravelu, J.~Sombeck, L.~E. Miller, S.~J. Bensmaia, and W.~M. Grill.
+\newblock Stoney vs. {H}isted: quantifying the spatial effects of intracortical
+  microstimulation.
+\newblock \emph{Brain Stimulation}, 15:\penalty0 141--151, 2022.
+
+\bibitem[Stoney et~al.(1968)Stoney, Thompson, and Asanuma]{stoney1968}
+S.~D. Stoney, W.~D. Thompson, and H.~Asanuma.
+\newblock Excitation of pyramidal tract cells by intracortical
+  microstimulation: effective extent of stimulating current.
+\newblock \emph{Journal of Neurophysiology}, 31:\penalty0 659--669, 1968.
+
+\bibitem[Dadarlat et~al.(2024)Dadarlat, Sun, and Stryker]{dadarlat2024}
+M.~C. Dadarlat, Y.~J. Sun, and M.~P. Stryker.
+\newblock Activity-dependent recruitment of inhibition and excitation in the
+  awake mammalian cortex during electrical stimulation.
+\newblock \emph{Neuron}, 112:\penalty0 821--834, 2024.
+
+\bibitem[Ahmadian et~al.(2013)Ahmadian, Rubin, and Miller]{ahmadian2013}
+Y.~Ahmadian, D.~B. Rubin, and K.~D. Miller.
+\newblock Analysis of the stabilized supralinear network.
+\newblock \emph{Neural Computation}, 25:\penalty0 1994--2037, 2013.
+
+\bibitem[Rubin et~al.(2015)Rubin, Van~Hooser, and Miller]{rubin2015}
+D.~B. Rubin, S.~D. Van~Hooser, and K.~D. Miller.
+\newblock The stabilized supralinear network: a unifying circuit motif
+  underlying multi-input integration in sensory cortex.
+\newblock \emph{Neuron}, 85:\penalty0 402--417, 2015.
+
+\bibitem[Obeid and Miller(2025)]{obeid2025}
+D.~Obeid and K.~D. Miller.
+\newblock Stabilized supralinear network model of responses to surround stimuli
+  in primary visual cortex.
+\newblock \emph{eNeuro}, 12\penalty0 (5), 2025.
+\newblock \doi{10.1523/ENEURO.0459-24.2025}.
+
+\bibitem[Tsodyks and Markram(1997)]{tsodyks1997}
+M.~V. Tsodyks and H.~Markram.
+\newblock The neural code between neocortical pyramidal neurons depends on
+  neurotransmitter release probability.
+\newblock \emph{Proceedings of the National Academy of Sciences USA},
+  94:\penalty0 719--723, 1997.
+
+\bibitem[Varela et~al.(1997)Varela, Sen, Gibson, Fost, Abbott, and
+  Nelson]{varela1997}
+J.~A. Varela, K.~Sen, J.~Gibson, J.~Fost, L.~F. Abbott, and S.~B. Nelson.
+\newblock A quantitative description of short-term plasticity at excitatory
+  synapses in layer 2/3 of rat primary visual cortex.
+\newblock \emph{Journal of Neuroscience}, 17:\penalty0 7926--7940, 1997.
+
+\bibitem[Rojer and Schwartz(1990)]{rojer1990}
+A.~S. Rojer and E.~L. Schwartz.
+\newblock Cat and monkey cortical columnar patterns modeled by
+  bandpass-filtered 2d white noise.
+\newblock \emph{Biological Cybernetics}, 1990.
+
+\bibitem[Carandini and Heeger(2012)]{carandini2012}
+M.~Carandini and D.~J. Heeger.
+\newblock Normalization as a canonical neural computation.
+\newblock \emph{Nature Reviews Neuroscience}, 13:\penalty0 51--62, 2012.
+
+\bibitem[Butovas and Schwarz(2003)]{butovas2003}
+S.~Butovas and C.~Schwarz.
+\newblock Spatiotemporal effects of microstimulation in rat neocortex: a
+  parametric study using multielectrode recordings.
+\newblock \emph{Journal of Neurophysiology}, 90:\penalty0 3024--3039, 2003.
+
+\bibitem[Nassi et~al.(2015)Nassi, Avery, Cetin, Roe, and Reynolds]{nassi2015}
+J.~J. Nassi, M.~C. Avery, A.~H. Cetin, A.~W. Roe, and J.~H. Reynolds.
+\newblock Optogenetic activation of normalization in alert macaque visual
+  cortex.
+\newblock \emph{Neuron}, 86:\penalty0 1504--1517, 2015.
+
+\bibitem[Kim et~al.(2025)Kim, Sonego, Strohmer, et~al.]{kim2025}
+K.~Kim, V.~Sonego, B.~Strohmer, et~al.
+\newblock Single-cell and population-level neuromodulation dynamics in
+  dual-electrode intracortical stimulation.
+\newblock bioRxiv, 2025.
+
+\bibitem[Adams et~al.(2007)Adams, Sincich, and Horton]{adams2007}
+D.~L. Adams, L.~C. Sincich, and J.~C. Horton.
+\newblock Complete pattern of ocular dominance columns in human primary visual
+  cortex.
+\newblock \emph{Journal of Neuroscience}, 27:\penalty0 10391--10403, 2007.
+
+\end{thebibliography}

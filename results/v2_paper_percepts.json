@@ -1,0 +1,24 @@
+{
+  "decoder_r2": 0.658965593459703,
+  "n_sites": 5929,
+  "n_px": 16,
+  "line_separations_um": [
+    0.0,
+    1442.2205101855957,
+    2800.0,
+    4252.05832509386,
+    4560.701700396552
+  ],
+  "amp_ua": 300.0,
+  "activation_change": 0.1872847463970584,
+  "percept_change": 0.11528127226818587,
+  "activation_signed": 0.016869196977187053,
+  "percept_rms_ratio": 0.9370313854910546,
+  "percept_correlation": 0.9945040380702981,
+  "pooled_divisor": {
+    "activation_change": 0.32063198371146284,
+    "percept_change": 0.31970555555514174,
+    "activation_signed": -0.29714703446348284,
+    "percept_rms_ratio": 0.7108908733091059
+  }
+}

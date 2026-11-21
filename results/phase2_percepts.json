@@ -1,0 +1,34 @@
+{
+  "decoder": {
+    "r2": 0.6581109486145486,
+    "n_sites": 5929,
+    "n_px": 16
+  },
+  "single_electrode": {
+    "independent (baseline-like)": {
+      "peak": 0.1527156396324581,
+      "energy": 3.115134167637209
+    },
+    "circuit": {
+      "peak": 0.8606514236962212,
+      "energy": 17.29869587207436
+    }
+  },
+  "pattern": {
+    "independent (baseline-like)": {
+      "percept_change": 0.0,
+      "activation_change": 0.0
+    },
+    "circuit": {
+      "percept_change": 0.31970555555514385,
+      "activation_change": 0.32063198371146284
+    }
+  },
+  "electrode_separations_um": [
+    0.0,
+    1442.2205101855957,
+    2800.0,
+    4252.05832509386,
+    4560.701700396552
+  ]
+}

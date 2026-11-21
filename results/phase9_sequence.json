@@ -1,0 +1,230 @@
+{
+  "sequence_bias": {
+    "150.0": [
+      {
+        "delay_ms": 0.0,
+        "brightness_first": 2.8423987507686914,
+        "brightness_second": 2.8380027970826323,
+        "ratio_second_over_first": 0.9984534352596129
+      },
+      {
+        "delay_ms": 25.0,
+        "brightness_first": 2.949947310665578,
+        "brightness_second": 2.8072999107016128,
+        "ratio_second_over_first": 0.9516440854898589
+      },
+      {
+        "delay_ms": 50.0,
+        "brightness_first": 2.993387006018774,
+        "brightness_second": 2.869066105934304,
+        "ratio_second_over_first": 0.9584681500138474
+      },
+      {
+        "delay_ms": 100.0,
+        "brightness_first": 2.993387006018774,
+        "brightness_second": 2.9434578942731426,
+        "ratio_second_over_first": 0.9833201949346211
+      },
+      {
+        "delay_ms": 200.0,
+        "brightness_first": 2.993387006018774,
+        "brightness_second": 2.982520542838566,
+        "ratio_second_over_first": 0.9963698435389882
+      },
+      {
+        "delay_ms": 400.0,
+        "brightness_first": 2.993387006018774,
+        "brightness_second": 2.9886239407152106,
+        "ratio_second_over_first": 0.998408804042382
+      }
+    ],
+    "300.0": [
+      {
+        "delay_ms": 0.0,
+        "brightness_first": 5.177034156733742,
+        "brightness_second": 5.186706233637206,
+        "ratio_second_over_first": 1.0018682660014677
+      },
+      {
+        "delay_ms": 25.0,
+        "brightness_first": 6.235332673572169,
+        "brightness_second": 4.946967587590477,
+        "ratio_second_over_first": 0.7933766883935001
+      },
+      {
+        "delay_ms": 50.0,
+        "brightness_first": 6.63993549754401,
+        "brightness_second": 5.5757549822221435,
+        "ratio_second_over_first": 0.839730293206088
+      },
+      {
+        "delay_ms": 100.0,
+        "brightness_first": 6.63993549754401,
+        "brightness_second": 6.20416996364449,
+        "ratio_second_over_first": 0.934372023032347
+      },
+      {
+        "delay_ms": 200.0,
+        "brightness_first": 6.63993549754401,
+        "brightness_second": 6.5874078232402935,
+        "ratio_second_over_first": 0.9920891288291662
+      },
+      {
+        "delay_ms": 400.0,
+        "brightness_first": 6.63993549754401,
+        "brightness_second": 6.651292880241181,
+        "ratio_second_over_first": 1.0017104658172316
+      }
+    ],
+    "600.0": [
+      {
+        "delay_ms": 0.0,
+        "brightness_first": 4.475884061576831,
+        "brightness_second": 4.484361166192979,
+        "ratio_second_over_first": 1.0018939508931697
+      },
+      {
+        "delay_ms": 25.0,
+        "brightness_first": 6.609806204794397,
+        "brightness_second": 4.006689575332771,
+        "ratio_second_over_first": 0.6061735323535711
+      },
+      {
+        "delay_ms": 50.0,
+        "brightness_first": 7.340781075027169,
+        "brightness_second": 5.141544479373502,
+        "ratio_second_over_first": 0.7004083661975266
+      },
+      {
+        "delay_ms": 100.0,
+        "brightness_first": 7.340781075027169,
+        "brightness_second": 6.305053589718694,
+        "ratio_second_over_first": 0.8589077272945861
+      },
+      {
+        "delay_ms": 200.0,
+        "brightness_first": 7.340781075027169,
+        "brightness_second": 7.188531386141652,
+        "ratio_second_over_first": 0.9792597426173817
+      },
+      {
+        "delay_ms": 400.0,
+        "brightness_first": 7.340781075027169,
+        "brightness_second": 7.3540256914453925,
+        "ratio_second_over_first": 1.0018042516569907
+      }
+    ]
+  },
+  "max_predicted_dimming_pct": 39.38264676464289,
+  "power": {
+    "separations_um": [
+      400.0,
+      565.685424949238,
+      800.0,
+      1200.0,
+      1600.0,
+      2000.0,
+      2400.0,
+      3200.0,
+      4525.483399593904
+    ],
+    "curve_pointwise": [
+      43.82496960308924,
+      42.526849002331254,
+      39.12064413353482,
+      23.71812945162496,
+      13.04443890005392,
+      7.932027862219251,
+      1.1724430422935532,
+      0.004515493497455856,
+      1.2572465715026341e-08
+    ],
+    "curve_pooled": [
+      18.01979791558886,
+      15.960996953813227,
+      14.916435327026404,
+      22.12782646999976,
+      24.69751873335601,
+      21.848899919259903,
+      17.00388733576569,
+      7.993620105570441,
+      1.394423801047181
+    ],
+    "shape_correlation": 0.3202440884107501,
+    "rows": [
+      {
+        "sem_pp": 10.0,
+        "power_if_pointwise": 0.99625,
+        "power_if_pooled": 0.96375
+      },
+      {
+        "sem_pp": 20.0,
+        "power_if_pointwise": 0.90225,
+        "power_if_pooled": 0.8085
+      },
+      {
+        "sem_pp": 30.0,
+        "power_if_pointwise": 0.802,
+        "power_if_pooled": 0.71025
+      },
+      {
+        "sem_pp": 50.0,
+        "power_if_pointwise": 0.67775,
+        "power_if_pooled": 0.60225
+      },
+      {
+        "sem_pp": 75.0,
+        "power_if_pointwise": 0.59375,
+        "power_if_pooled": 0.545
+      },
+      {
+        "sem_pp": 100.0,
+        "power_if_pointwise": 0.5645,
+        "power_if_pooled": 0.52025
+      },
+      {
+        "sem_pp": 150.0,
+        "power_if_pointwise": 0.5385,
+        "power_if_pooled": 0.50425
+      },
+      {
+        "sem_pp": 200.0,
+        "power_if_pointwise": 0.52675,
+        "power_if_pooled": 0.49625
+      }
+    ],
+    "sem_tolerance_pp": 30.0
+  },
+  "reduced_protocols": {
+    "9 separations (full)": 30.0,
+    "4 separations (0.4/1.2/1.6/3.2)": 20.0,
+    "3 separations (0.4/1.6/3.2)": 20.0,
+    "2 separations (0.4/1.6)": 20.0
+  },
+  "drift_confound": [
+    {
+      "drift": 0.0,
+      "power_if_pooled": 0.821
+    },
+    {
+      "drift": 0.1,
+      "power_if_pooled": 0.781
+    },
+    {
+      "drift": 0.2,
+      "power_if_pooled": 0.7556666666666667
+    },
+    {
+      "drift": 0.3,
+      "power_if_pooled": 0.7243333333333334
+    },
+    {
+      "drift": 0.5,
+      "power_if_pooled": 0.6733333333333333
+    },
+    {
+      "drift": 0.7,
+      "power_if_pooled": 0.5863333333333334
+    }
+  ]
+}

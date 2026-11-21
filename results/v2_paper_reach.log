@@ -1,0 +1,14 @@
+
+=== reach
+  deliverable target 1: 1.000
+  deliverable target 2: 1.000
+  deliverable target 3: 1.000
+  deliverable target 4: 0.999
+  deliverable target 5: 0.999
+  deliverable target 6: 1.000
+  horizontal bar   0.109
+  vertical bar     0.206
+  diagonal bar     0.197
+  square outline   0.051
+wrote results/v2_paper_reach.json
+  (91s)

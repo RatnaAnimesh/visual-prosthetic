@@ -1,0 +1,67 @@
+{
+  "rows": [
+    {
+      "amp_ua": 10.0,
+      "halfmax_diameter_deg": 0.12360774464742066,
+      "visible_diameter_deg": 0.0,
+      "dynaphos_diameter_deg": null,
+      "peak_evoked_hz": 0.23605960929666736
+    },
+    {
+      "amp_ua": 20.0,
+      "halfmax_diameter_deg": 0.12360774464742066,
+      "visible_diameter_deg": 0.0,
+      "dynaphos_diameter_deg": null,
+      "peak_evoked_hz": 0.6621484188679758
+    },
+    {
+      "amp_ua": 50.0,
+      "halfmax_diameter_deg": 0.12153015559492998,
+      "visible_diameter_deg": 0.10585134856802454,
+      "dynaphos_diameter_deg": null,
+      "peak_evoked_hz": 2.465372006959127
+    },
+    {
+      "amp_ua": 100.0,
+      "halfmax_diameter_deg": 0.12360774464742066,
+      "visible_diameter_deg": 0.1888139487765259,
+      "dynaphos_diameter_deg": 0.12565098628628435,
+      "peak_evoked_hz": 6.273751180727395
+    },
+    {
+      "amp_ua": 150.0,
+      "halfmax_diameter_deg": 0.13159049284959082,
+      "visible_diameter_deg": 0.22454461911057333,
+      "dynaphos_diameter_deg": 0.15635280380893438,
+      "peak_evoked_hz": 10.308114683517763
+    },
+    {
+      "amp_ua": 200.0,
+      "halfmax_diameter_deg": 0.13911592676604098,
+      "visible_diameter_deg": 0.24618326979994754,
+      "dynaphos_diameter_deg": 0.17186959427966245,
+      "peak_evoked_hz": 14.020899490445705
+    },
+    {
+      "amp_ua": 300.0,
+      "halfmax_diameter_deg": 0.1479855404066384,
+      "visible_diameter_deg": 0.28456639830653996,
+      "dynaphos_diameter_deg": 0.21290215544369623,
+      "peak_evoked_hz": 19.60711899716985
+    },
+    {
+      "amp_ua": 400.0,
+      "halfmax_diameter_deg": 0.16583719174624104,
+      "visible_diameter_deg": 0.3044533443020783,
+      "dynaphos_diameter_deg": 0.24514670406003766,
+      "peak_evoked_hz": 22.77995510437837
+    },
+    {
+      "amp_ua": 600.0,
+      "halfmax_diameter_deg": 0.20058506827187098,
+      "visible_diameter_deg": 0.3437391885593249,
+      "dynaphos_diameter_deg": 0.3019336870954244,
+      "peak_evoked_hz": 24.64693155208534
+    }
+  ]
+}
