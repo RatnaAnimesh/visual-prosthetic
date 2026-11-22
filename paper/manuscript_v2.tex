@@ -60,8 +60,8 @@ Cortical Visual Prostheses}
     \bigskip
     \begin{center}\textbf{\normalsize Abstract}\end{center}
 
-    \noindent Simulators of cortical visual prostheses treat each electrode
-    as independent. Each produces a Gaussian phosphene at its retinotopic
+    \noindent Phosphene simulators for cortical visual prostheses treat each
+    electrode as independent. Each produces a Gaussian phosphene at its retinotopic
     position, and percepts from separate electrodes add. Stimulus encoders
     are trained against these simulators, so the assumption matters. We
     ask which properties of primary visual cortex break it, by how much,
@@ -83,7 +83,9 @@ Cortical Visual Prostheses}
     of ongoing activity and sub-additive summation of visual and electrical
     drive. Its single-electrode phosphene matches the Dynaphos size at
     100~\uA{} without being fitted to it. It misses the net enhancement
-    reported for paired electrodes in mouse.
+    reported for paired electrodes in mouse. It gains that enhancement if
+    electrodes drive at least a fifth more inhibitory cells than measured,
+    but never loses it again at higher current as the data do.
 
     \smallskip
     \noindent Electrodes in this model interact mostly through occupancy. A
@@ -109,6 +111,9 @@ Cortical Visual Prostheses}
     standard error of 20 percentage points at each, tells the two apart. At
     moderate currents the sign of the interaction turns on how many
     inhibitory cells an electrode drives directly, a quantity measured once.
+    Read through the model, the paired-electrode data in mouse put it at
+    least a fifth higher, enough to shrink the suppression at 100~\uA{}
+    from 2.6\% to at most 1.5\%.
     \end{minipage}
     \end{center}
     \bigskip
@@ -176,11 +181,31 @@ Retinal work reached a similar conclusion earlier and more sharply.
 Horsager \textit{et al.} measured paired-electrode brightness interaction
 directly in Argus users and found effects that could be
 \emph{either} facilitatory or suppressive depending on timing and
-centre-to-centre distance \citep{horsager2010,horsager2011}. In cortex,
-Armenta Salas \textit{et al.} showed that phosphene brightness in Orion
-users depends on an electrode's position within a stimulation sequence
-\citep{armentasalas2022}. Brightness is demonstrably not additive. What is
-missing is a mechanistic account, and a forward model that expresses one.
+centre-to-centre distance \citep{horsager2010,horsager2011}. Shape behaves
+differently. In 3548 drawings from three Argus~II users, the shape of a
+paired-electrode phosphene was predicted by the sum of its two
+single-electrode shapes \citep{hou2024}. In cortex, Armenta Salas
+\textit{et al.} showed that phosphene brightness in Orion users depends on
+an electrode's position within a stimulation sequence
+\citep{armentasalas2022}. Brightness is demonstrably not additive.
+
+The question is as old as cortical prostheses. Brindley and Lewin's
+patient told apart phosphenes from surface electrodes 2.4~mm apart and saw
+simple patterns when several were stimulated together
+\citep{brindley1968}. Intracortical electrodes later gave separate
+phosphenes 700 and 500~\um{} apart \citep{bak1990,schmidt1996}, and Bak
+\textit{et al.} counted interactions between simultaneously evoked
+phosphenes among the problems of surface stimulation. Microstimulation
+elsewhere in cortex gives the same mixed picture. In monkey somatosensory
+cortex, detection thresholds for current spread over two to four
+electrodes matched the prediction for electrodes acting independently
+\citep{kim2015}. In rat somatosensory cortex, synchronous stimulation of
+two adjacent sites halved the charge each needed for detection, and the
+saving shrank as the sites moved apart \citep{kunigk2022}. In mouse V1,
+two-photon imaging during paired stimulation found single cells both
+enhanced and attenuated, with the balance between them set by current
+\citep{kim2025}. What is missing is a mechanistic account, and a forward
+model that expresses one.
 
 Existing cortical forward models do not supply that account, though the
 gap is recognised. A peer reviewer of Dynaphos noted publicly that the
@@ -201,6 +226,14 @@ electrode's own response, which as section~\ref{sec:structure} shows
 leaves electrodes additive. Neither model tests electrode independence,
 and neither is compared against multi-electrode interaction data.
 
+Learned models are the other route. Moure \textit{et al.} trained a deep
+network on responses recorded through a participant's own array to predict
+single-trial evoked activity from the stimulation pattern, and inverted it
+to design stimulation \citep{moure2025}. A model of that kind can learn
+interaction wherever recordings exist. It cannot say which mechanism
+produces it, or how it should scale with current and separation in a
+patient whose array does not record.
+
 The obvious cortical analogue of the retinal effect is the long-range
 horizontal connection system, the superficial pyramidal axons that run for
 millimetres parallel to the cortical surface and terminate in clusters on
@@ -210,7 +243,9 @@ axon-bundle effect. They do not, and the reason turns out to matter more
 than the original hypothesis did. No linear mechanism can make electrodes
 interact, and neither can a nonlinearity applied to each electrode before
 the electrodes are summed. Interaction needs a nonlinearity acting on the
-combined input.
+combined input. The argument is elementary. Its use is as a sorting rule
+that says which proposed mechanisms can produce interaction at all, before
+any of them is simulated.
 
 That leaves the question of how much of one cortex supplies. We answer it
 with a forward model in which recruitment and the network are both taken
@@ -487,20 +522,31 @@ sub-additivity Nassi \textit{et al.} measured \citep{nassi2015}
 (figure~\ref{fig:f3}(c)).
 
 One comparison goes partly wrong. Kim \textit{et al.} imaged mouse V1
-during paired stimulation 370--850~\um{} apart \citep{kim2025}. They saw
-little modulation at 6.8~\uA, net enhancement at 12.7~\uA{} and none at
-15.9~\uA. Attenuation was concentrated in cells that responded strongly to
-one electrode, enhancement in cells that responded to neither, and both
-peaked between the electrodes. The model puts the modulation between the
-electrodes and puts the attenuation in the directly driven cells, where
-occupancy says it has to be. It predicts no enhancement anywhere, though.
-Its net modulation at the three currents is $-0.09$\%, $-0.23$\% and
-$-0.32$\% of the summed response, small and suppressive, and the
+beside one of two electrodes placed 370--850~\um{} apart, with the other
+outside the field of view \citep{kim2025}. Averaged over the cells in
+view, the paired response minus the two single responses was small at
+6.8~\uA, positive at 12.7~\uA{} and zero at 15.9~\uA. Attenuation was
+concentrated in cells that responded strongly to one electrode, cells
+that responded to neither were enhanced at every current, and modulation
+was strongest between the electrodes. The model puts the modulation
+between the electrodes and puts the attenuation in the directly driven
+cells, where occupancy says it has to be. At the calibrated inhibitory
+density it predicts no enhancement, though. Its net modulation at the
+three currents is $-0.09$\%, $-0.23$\% and $-0.32$\% of the summed
+response over an 800~\um{} square centred between the electrodes, and
+$-0.10$\%, $-0.25$\% and $-0.35$\% over a 500~\um{} square with one
+electrode at its corner, close to the geometry Kim \textit{et al.}
+describe. The
 network-driven cells are slightly suppressed as well
-(figure~\ref{fig:f3}(d)). A population rate model has no cell-to-cell
-variability, and the authors' own spiking model links part of the
-enhancement to it, so this may be a limit of the model class. We count it
-as a miss.
+(figure~\ref{fig:f3}(d)).
+
+The authors' own spiking network does not point to cell-to-cell
+variability as the missing ingredient. In it, silencing inhibition or
+removing noise each increased the enhancement between the electrodes
+\citep{kim2025}. Section~\ref{sec:twoconstraints} asks whether a different
+inhibitory density closes the gap. It closes the sign at 12.7~\uA{} but
+not the return to zero at 15.9~\uA, and we count the comparison as a
+miss.
 
 Read out through the implant's retinotopy, one electrode at 100~\uA{}
 produces a phosphene 0.124\textdegree{} across at half maximum, against
@@ -567,7 +613,8 @@ An excitatory cell reached by both electrodes fires once, not twice, which
 subtracts from the paired response. An inhibitory cell reached by both
 inhibits once, not twice, which adds to it. Which effect wins at moderate
 currents is set by a ratio that has been measured once, in mouse
-\citep{dadarlat2024}.
+\citep{dadarlat2024}. Section~\ref{sec:twoconstraints} sets it against a
+second dataset.
 
 \begin{table*}[t]
 \centering
@@ -596,6 +643,64 @@ currents is set by a ratio that has been measured once, in mouse
 \label{tab:t4}
 \small
 \input{tables/v2_sensitivity.tex}
+\end{table*}
+
+\subsection{Two measurements of one number}
+\label{sec:twoconstraints}
+
+The lever in the last paragraph can be set against both mouse datasets at
+once (table~\ref{tab:inh}). We scaled the inhibitory site density from half
+to three times its calibrated value. At each step we recorded the
+recruited I/E ratio within 300~\um{} at 20~\uA, the quantity Dadarlat
+\textit{et al.} measured, Kim \textit{et al.}'s net paired modulation at
+their three currents and four separations, and the signed interaction at
+0.4~mm.
+
+Kim \textit{et al.}'s pattern appears in stages. The directly driven cells
+are attenuated at every density, as they found. The network-driven cells
+turn to enhancement at every current from 1.1 times the calibrated
+density at 485~\um, an I/E ratio of 1.24, and at every separation from
+1.4 times (ratio 1.58). The net turns positive at 12.7~\uA{} between
+1.22 and 1.47 times the calibrated density, depending on the separation
+and on which of the two viewing geometries is used, and it turns positive
+at all three currents together. That is an I/E ratio of 1.37 to 1.65,
+against 1.13 at calibration and about 1.1 measured. The interaction at
+100~\uA{} and 0.4~mm turns facilitatory at 1.47 times (ratio 1.65), the
+top of that range. At 300~\uA{} it stays suppressive at every density
+tested.
+
+Inside this model the two mouse datasets therefore disagree by at least a
+fifth in the I/E ratio. Kim \textit{et al.}'s sign gives only a lower bound
+on the density, and at that bound the interaction at 100~\uA{} is
+$-1.5$\%. If their sign is right, the suppression at 100~\uA{} is at most
+1.5\%, against 2.6\% at calibration, or the interaction is facilitatory.
+Neither dataset fixes its sign.
+
+No density reproduces the current dependence. At every density,
+separation and viewing geometry the net modulation grows from 6.8 to
+15.9~\uA, and once positive it stays positive. Kim \textit{et al.}'s
+enhancement at 12.7~\uA{} had gone by 15.9~\uA. In their data the return
+to zero came from attenuation of the strongly driven cells, which at the
+highest current were more than half of those imaged. The model's directly
+driven cells are attenuated too, but at no density does their attenuation
+overtake the network's enhancement once that has appeared. This part of
+the miss does not depend on the inhibitory density, and a model with
+single cells would have to explain it.
+
+\begin{table*}[t]
+\centering
+\caption{Direct inhibitory recruitment against the two mouse datasets.
+  Inhibitory site density is relative to the calibrated value. The I/E
+  ratio is that of recruited cells within 300~\um{} at 20~\uA, measured as
+  about 1.1 \citep{dadarlat2024}. Paired net modulation is for electrodes
+  485~\um{} apart at 200~Hz, in percent of the summed single responses over
+  an 800~\um{} square centred between the electrodes. Kim \textit{et al.}
+  report a positive net at 12.7~\uA{} \citep{kim2025}. $^\ast$The same over
+  a 500~\um{} square with one electrode at its corner. Signed interaction
+  is summed over the sheet.}
+\label{tab:inh}
+\small
+\input{tables/inhibition.tex}
 \end{table*}
 
 \subsection{The human multi-electrode data}
@@ -911,7 +1016,11 @@ is the measurement we would ask for first. At 100~\uA{} and 400~\um{} it
 alone moves the predicted interaction from $-7.6$\% to $+9.8$\%
 (table~\ref{tab:t4}), because an inhibitory cell reached by two electrodes
 inhibits once instead of twice. It has been measured once, as a ratio of
-responding cells in awake mouse V1 \citep{dadarlat2024}. Two-photon imaging
+responding cells in awake mouse V1 \citep{dadarlat2024}. Read through this
+model, Kim \textit{et al.}'s paired data put the ratio at 1.37 or above,
+and the sign at 100~\uA{} turns at 1.65 (section~\ref{sec:twoconstraints}).
+A direct measurement able to tell 1.1 from 1.65 would settle it.
+Two-photon imaging
 of interneuron-labelled lines during single and paired stimulation, at the
 currents and pitches devices use, would fix it, and doing so in primate
 cortex would fix it for the case that matters.
@@ -999,12 +1108,16 @@ range.
 \begin{itemize}[leftmargin=1.1em,itemsep=0.2em,topsep=0.2em]
 \item \textbf{The sign at moderate currents is not determined.} It depends
   on the direct recruitment of inhibitory cells, calibrated here to one
-  mouse measurement. Table~\ref{tab:t4} gives the range.
-\item \textbf{The model misses one comparison.} It predicts small
-  suppression where Kim \textit{et al.} report net enhancement at
-  12.7~\uA, and it does not enhance the cells that respond to neither
-  electrode. It also underestimates how far recruited somata spread as
-  current rises (table~\ref{tab:t3}).
+  mouse measurement. Table~\ref{tab:t4} gives the range, and Kim
+  \textit{et al.}'s paired data bound it from one side
+  (table~\ref{tab:inh}).
+\item \textbf{The model misses one comparison.} At the calibrated density
+  it predicts small suppression where Kim \textit{et al.} report net
+  enhancement at 12.7~\uA, and it does not enhance the cells that respond
+  to neither electrode. More inhibitory recruitment fixes both, but at no
+  density does the enhancement vanish again at 15.9~\uA. It also
+  underestimates how far recruited somata spread as current rises
+  (table~\ref{tab:t3}).
 \item \textbf{Its parameters come from cat, macaque and mouse.} Network
   lengths are from a cat- and macaque-scale model, and recruitment from
   mouse and cat imaging. A variant with every lateral length scaled to
@@ -1043,8 +1156,10 @@ range.
 
 \section{Conclusion}
 
-Electrode independence is assumed by every current cortical prosthesis
-simulator, and it holds in them exactly, by construction. Human data shows
+Electrode independence is assumed by every current cortical phosphene
+simulator, and it holds in them exactly, by construction. Learned forward
+models fitted to a participant's own recordings need not assume it, but
+they do not say where interaction comes from. Human data shows
 it fails in some regimes, with concurrently stimulated electrodes producing
 percepts that are smaller than predicted in some and larger in others.
 
@@ -1066,8 +1181,9 @@ drive, a sequential penalty and a ceiling on what an array can deliver,
 do not appear, and neither model reaches the separations at which the
 human size changes were measured. Whether the interaction at moderate
 currents is suppressive or facilitatory turns on how many inhibitory
-cells an electrode drives directly. That is the number we would most like
-to see measured.
+cells an electrode drives directly. Paired-electrode imaging in mouse
+suggests it is higher than the one direct measurement. That is the number
+we would most like to see measured.
 
 \section*{Data availability}
 
@@ -1133,10 +1249,10 @@ Diamonds are the three-dimensional medians of \citet{kumaravelu2022},
 which grow faster than the model's. (c) Response at the electrode's own
 site to a grating and stimulation together, as a fraction of the two
 alone. Summation is sub-additive at every contrast, as \citet{nassi2015}
-found. (d) Paired electrodes 485~\um{} apart at 200~Hz, the configuration
-of \citet{kim2025}. The paired response minus the sum of the single
-responses, in percent of that sum, over an $800\times800$~\um{} field
-between the electrodes. Directly driven cells (purple) are attenuated by
+found. (d) Paired electrodes 485~\um{} apart at 200~Hz, the spacing
+\citet{kim2025} used in their own model. The paired response minus the
+sum of the single responses, in percent of that sum, over an
+$800\times800$~\um{} field between the electrodes. Directly driven cells (purple) are attenuated by
 occupancy, and network-driven cells (green) are slightly suppressed.
 Shading marks the currents they used. They report net enhancement at the
 middle one, which the model does not reproduce.}

@@ -1,4 +1,4 @@
-\begin{thebibliography}{32}
+\begin{thebibliography}{39}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -85,11 +85,66 @@ A.~Horsager, G.~M. Boynton, R.~J. Greenberg, and I.~Fine.
 \newblock \emph{Investigative Ophthalmology \& Visual Science}, 52:\penalty0
   549--557, 2011.
 
+\bibitem[Hou et~al.(2024)Hou, Nanduri, Granley, Weiland, and Beyeler]{hou2024}
+Y.~Hou, D.~Nanduri, J.~Granley, J.~D. Weiland, and M.~Beyeler.
+\newblock Axonal stimulation affects the linear summation of single-point
+  perception in three {Argus II} users.
+\newblock \emph{Journal of Neural Engineering}, 2024.
+\newblock \doi{10.1088/1741-2552/ad31c4}.
+
 \bibitem[Armenta~Salas et~al.(2022)]{armentasalas2022}
 M.~Armenta~Salas et~al.
 \newblock Sequence of visual cortex stimulation affects phosphene brightness in
   blind subjects.
 \newblock \emph{Brain Stimulation}, 15:\penalty0 605--614, 2022.
+
+\bibitem[Brindley and Lewin(1968)]{brindley1968}
+G.~S. Brindley and W.~S. Lewin.
+\newblock The sensations produced by electrical stimulation of the visual
+  cortex.
+\newblock \emph{The Journal of Physiology}, 196\penalty0 (2):\penalty0
+  479--493, 1968.
+\newblock \doi{10.1113/jphysiol.1968.sp008519}.
+
+\bibitem[Bak et~al.(1990)Bak, Girvin, Hambrecht, Kufta, Loeb, and
+  Schmidt]{bak1990}
+M.~Bak, J.~P. Girvin, F.~T. Hambrecht, C.~V. Kufta, G.~E. Loeb, and E.~M.
+  Schmidt.
+\newblock Visual sensations produced by intracortical microstimulation of the
+  human occipital cortex.
+\newblock \emph{Medical and Biological Engineering and Computing}, 28\penalty0
+  (3):\penalty0 257--259, 1990.
+\newblock \doi{10.1007/BF02442682}.
+
+\bibitem[Schmidt et~al.(1996)Schmidt, Bak, Hambrecht, Kufta, O'Rourke, and
+  Vallabhanath]{schmidt1996}
+E.~M. Schmidt, M.~J. Bak, F.~T. Hambrecht, C.~V. Kufta, D.~K. O'Rourke, and
+  P.~Vallabhanath.
+\newblock Feasibility of a visual prosthesis for the blind based on
+  intracortical microstimulation of the visual cortex.
+\newblock \emph{Brain}, 119\penalty0 (2):\penalty0 507--522, 1996.
+\newblock \doi{10.1093/brain/119.2.507}.
+
+\bibitem[Kim et~al.(2015)Kim, Callier, Tabot, Tenore, and Bensmaia]{kim2015}
+S.~Kim, T.~Callier, G.~A. Tabot, F.~V. Tenore, and S.~J. Bensmaia.
+\newblock Sensitivity to microstimulation of somatosensory cortex distributed
+  over multiple electrodes.
+\newblock \emph{Frontiers in Systems Neuroscience}, 9:\penalty0 47, 2015.
+\newblock \doi{10.3389/fnsys.2015.00047}.
+
+\bibitem[Kunigk et~al.(2022)Kunigk, Urdaneta, Malone, Delgado, and
+  Otto]{kunigk2022}
+N.~G. Kunigk, M.~E. Urdaneta, I.~G. Malone, F.~Delgado, and K.~J. Otto.
+\newblock Reducing behavioral detection thresholds per electrode via
+  synchronous, spatially-dependent intracortical microstimulation.
+\newblock \emph{Frontiers in Neuroscience}, 16:\penalty0 876142, 2022.
+\newblock \doi{10.3389/fnins.2022.876142}.
+
+\bibitem[Kim et~al.(2025)Kim, Sonego, Strohmer, et~al.]{kim2025}
+K.~Kim, V.~Sonego, B.~Strohmer, et~al.
+\newblock Single-cell and population-level neuromodulation dynamics in
+  dual-electrode intracortical stimulation.
+\newblock bioRxiv, 2025.
 
 \bibitem[Fine and Boynton(2024)]{fineboynton2024}
 I.~Fine and G.~M. Boynton.
@@ -97,6 +152,16 @@ I.~Fine and G.~M. Boynton.
   effects of human visual cortical stimulation, from pulse trains to percepts.
 \newblock \emph{Scientific Reports}, 14:\penalty0 17400, 2024.
 \newblock \doi{10.1038/s41598-024-65337-1}.
+
+\bibitem[Moure et~al.(2025)Moure, Granley, Grani, Soo, Lozano, L{\'o}pez-Peco,
+  Villamarin-Ortiz, Soto-Sanchez, Liu, Beyeler, and Fern{\'a}ndez]{moure2025}
+P.~Moure, J.~Granley, F.~Grani, L.~Soo, A.~Lozano, R.~L{\'o}pez-Peco,
+  A.~Villamarin-Ortiz, C.~Soto-Sanchez, S.-C. Liu, M.~Beyeler, and
+  E.~Fern{\'a}ndez.
+\newblock Deep learning-based control of electrically evoked activity in human
+  visual cortex.
+\newblock bioRxiv, 2025.
+\newblock Published in \textit{Neuron}, 2026.
 
 \bibitem[Gilbert and Wiesel(1983)]{gilbert1983}
 C.~D. Gilbert and T.~N. Wiesel.
@@ -187,12 +252,6 @@ J.~J. Nassi, M.~C. Avery, A.~H. Cetin, A.~W. Roe, and J.~H. Reynolds.
 \newblock Optogenetic activation of normalization in alert macaque visual
   cortex.
 \newblock \emph{Neuron}, 86:\penalty0 1504--1517, 2015.
-
-\bibitem[Kim et~al.(2025)Kim, Sonego, Strohmer, et~al.]{kim2025}
-K.~Kim, V.~Sonego, B.~Strohmer, et~al.
-\newblock Single-cell and population-level neuromodulation dynamics in
-  dual-electrode intracortical stimulation.
-\newblock bioRxiv, 2025.
 
 \bibitem[Adams et~al.(2007)Adams, Sincich, and Horton]{adams2007}
 D.~L. Adams, L.~C. Sincich, and J.~C. Horton.

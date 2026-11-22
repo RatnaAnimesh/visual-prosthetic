@@ -24,7 +24,7 @@ sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
 
 from prosthesis.cortex_ssn import BiophysicalCortex
 from prosthesis.v2_paper import (AMP_GRID, Forward, Retinotopy, bio_code,
-                                 centroid_separation, disc_diameter,
+                                 centroid_separation, crossing, disc_diameter,
                                  repulsion)
 
 
@@ -197,3 +197,10 @@ def test_linear_fit_fidelity_separates_reachable_from_unreachable():
     for shape in shape_targets(n).values():
         assert linear_fit_fidelity(singles, shape) < 0.6
     assert linear_fit_fidelity(singles, np.zeros((n, n))) == 0.0
+
+
+def test_crossing_finds_the_first_turn_to_positive():
+    """The sign change is interpolated, and only negative-to-positive counts."""
+    assert crossing([1.0, 2.0, 3.0], [-1.0, 1.0, 3.0]) == pytest.approx(1.5)
+    assert crossing([1.0, 2.0, 3.0], [1.0, -1.0, 3.0]) == pytest.approx(2.25)
+    assert crossing([1.0, 2.0], [-1.0, -0.5]) is None

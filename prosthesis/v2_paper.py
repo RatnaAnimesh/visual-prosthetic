@@ -26,6 +26,10 @@ with human data:
                for it
     power      how much data the shape experiment needs when the candidates
                are this model and a pooled divisor
+    inhibition Kim et al. (2025) as a second constraint on how many inhibitory
+               cells an electrode drives directly, the parameter that sets the
+               sign at 100 uA.  Each multiple of the calibrated density gives
+               an I/E ratio to set against Dadarlat et al.'s 1.1
 
 Each part writes ``results/v2_paper_<part>.json`` (and, where a figure needs
 fields, ``results/v2_fields_<part>.npz``), so parts can run in parallel.
@@ -39,6 +43,7 @@ import json
 import pathlib
 import sys
 import time
+from dataclasses import replace
 
 import numpy as np
 from scipy.ndimage import map_coordinates
@@ -49,7 +54,7 @@ sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
 from pulse2percept.implants.cortex import Cortivis
 
 from prosthesis.cortex_circuit import CircuitSpatial
-from prosthesis.cortex_ssn import BiophysicalCortex
+from prosthesis.cortex_ssn import BiophysicalCortex, RecruitmentParams
 from prosthesis.percept_decoder import (CorticalCode, InversePercept,
                                         pink_noise, reconstruction_r2)
 from prosthesis.phase2_percepts import CTX_X, CTX_Y, pick_line
@@ -59,6 +64,7 @@ from prosthesis.phase9_sequence import fit_scale
 from prosthesis.phase9_sequence import power as shape_power
 from prosthesis.v2_experiments import (SEPS, VISIBLE_HZ, X0, Y0, interaction,
                                        interaction_range, pair)
+from prosthesis.v2_validate import dual_electrode
 
 RESULTS = pathlib.Path("results")
 RESULTS.mkdir(exist_ok=True)
@@ -665,10 +671,89 @@ def power_part(m, amp=300.0):
     return out
 
 
+INH_MULTS = (0.5, 1.0, 1.1, 1.2, 1.3, 1.4, 1.5, 1.75, 2.0, 2.5, 3.0)
+KIM_SEPS, KIM_AMPS = (370.0, 485.0, 558.0, 850.0), (6.8, 12.7, 15.9)
+
+
+def crossing(xs, ys):
+    """First x where ys turns from negative to non-negative, linearly
+    interpolated, or None if it never does."""
+    for xa, xb, ya, yb in zip(xs, xs[1:], ys, ys[1:]):
+        if ya < 0 <= yb:
+            return float(xa + (xb - xa) * ya / (ya - yb))
+    return None
+
+
+def inhibition(mults=INH_MULTS):
+    """Kim et al. and Dadarlat et al. as two constraints on one number.
+
+    For each multiple of the calibrated inhibitory site density: the
+    recruited I/E ratio within 300 um at 20 uA (Dadarlat's measure), Kim et
+    al.'s net paired modulation at their three currents and four
+    separations, and the signed interaction at 100 and 300 uA, 0.4 mm.  The
+    crossings are the multiples where each turns from suppression to
+    enhancement, with the I/E ratio there.
+    """
+    r = RecruitmentParams()
+    rows = []
+    for k in mults:
+        rec = replace(r, site_density_i=k * r.site_density_i)
+        fine = BiophysicalCortex(step_um=26.75, margin_um=2600.0, recruit=rec)
+        g = fine._ensure_cortical_grid(np.array([X0]), np.array([Y0]))
+        X, Y = np.meshgrid(g["xs"], g["ys"])
+        near = np.hypot(X - X0, Y - Y0) < 300
+        pe, pi = fine.recruited([20.0], [X0], [Y0], g)
+        m = BiophysicalCortex(recruit=rec)
+        row = {"mult": k,
+               "ie_ratio_300um_20ua": float(pi[near].mean() / pe[near].mean()),
+               "kim": dual_electrode(KIM_SEPS, KIM_AMPS, BiophysicalCortex(
+                   pulse_hz=200.0, recruit=rec))}
+        for a in (100.0, 300.0):
+            row[f"signed_{a:.0f}ua_0.4mm"] = interaction(
+                pair(m, 400.0, a))["signed_total"]
+        rows.append(row)
+        kim = {x["amp_ua"]: x for x in row["kim"]
+               if x["separation_um"] == 485.0}
+        print(f"  x{k:<5} I/E {row['ie_ratio_300um_20ua']:.2f}  Kim 485 um "
+              + " ".join(f"{100 * kim[a]['net_fraction']:+6.2f}"
+                         for a in KIM_AMPS)
+              + "  E1 view " + " ".join(
+                  f"{100 * kim[a]['net_fraction_e1_view']:+6.2f}"
+                  for a in KIM_AMPS)
+              + f"  signed 100/300 uA {100 * row['signed_100ua_0.4mm']:+6.2f}"
+              f" {100 * row['signed_300ua_0.4mm']:+6.2f}", flush=True)
+
+    ks = [x["mult"] for x in rows]
+    ie = [x["ie_ratio_300um_20ua"] for x in rows]
+
+    def at(ys):
+        k = crossing(ks, ys)
+        return {"mult": k,
+                "ie_ratio": None if k is None else float(np.interp(k, ks, ie))}
+
+    cross = {f"signed_{a:.0f}ua_0.4mm": at([x[f"signed_{a:.0f}ua_0.4mm"]
+                                            for x in rows])
+             for a in (100.0, 300.0)}
+    for sep in KIM_SEPS:
+        for a in KIM_AMPS:
+            for view in ("net_fraction", "net_fraction_e1_view"):
+                cross[f"kim_{a}ua_{sep:.0f}um_{view}"] = at(
+                    [next(y[view] for y in x["kim"]
+                          if y["separation_um"] == sep and y["amp_ua"] == a)
+                     for x in rows])
+    for name, c in cross.items():
+        if "12.7" in name or name.startswith("signed"):
+            print(f"  turns positive: {name:<40} "
+                  + ("never" if c["mult"] is None else
+                     f"x{c['mult']:.2f}  (I/E {c['ie_ratio']:.2f})"),
+                  flush=True)
+    return {"rows": rows, "crossings": cross, "dadarlat_ratio": 1.1}
+
+
 # ---------------------------------------------------------------------------
 
 PARTS = ("size", "bosking", "repulsion", "percepts", "reach",
-         "encoder", "power")
+         "encoder", "power", "inhibition")
 
 
 def run(part):
@@ -712,6 +797,8 @@ def run(part):
         _save(part, out, ex)
     elif part == "power":
         _save(part, power_part(m))
+    elif part == "inhibition":
+        _save(part, inhibition())
     print(f"  ({time.time() - t0:.0f}s)", flush=True)
 
 

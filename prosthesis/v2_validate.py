@@ -216,7 +216,7 @@ def inhibitory_recruitment():
 
 
 def dual_electrode(seps=(370.0, 485.0, 558.0, 850.0),
-                   amps=(6.8, 12.7, 15.9, 30.0, 60.0, 100.0, 200.0)):
+                   amps=(6.8, 12.7, 15.9, 30.0, 60.0, 100.0, 200.0), m=None):
     """Kim et al. 2025: the population and its parts under paired ICMS.
 
     The model has population rates, not single cells, so the comparison is
@@ -225,15 +225,18 @@ def dual_electrode(seps=(370.0, 485.0, 558.0, 850.0),
     ones; cells that respond to neither are those the network drives.  Their
     modulations (both minus the sum of each alone) are reported separately,
     with the net over an 800 x 800 um field of view centred between the
-    electrodes.
+    electrodes.  ``net_fraction_e1_view`` is the net over Kim et al.'s own
+    geometry instead: a 500 um square (their 25x objective) with E1 at one
+    corner, extending toward E2.
     """
-    m = BiophysicalCortex(pulse_hz=200.0)
+    m = m or BiophysicalCortex(pulse_hz=200.0)
     out = []
     for sep in seps:
         xe, ye = np.array([X0, X0 + sep]), np.array([Y0, Y0])
         g = m._ensure_cortical_grid(xe, ye)
         X, Y = np.meshgrid(g["xs"], g["ys"])
         fov = (np.abs(X - (X0 + sep / 2)) < 400) & (np.abs(Y - Y0) < 400)
+        e1_view = ((X >= X0) & (X - X0 < 500) & (Y <= Y0) & (Y0 - Y < 500))
         on_axis = np.abs(Y - Y0) < m.step / 2
         for amp in amps:
             F = {}
@@ -248,11 +251,16 @@ def dual_electrode(seps=(370.0, 485.0, 558.0, 850.0),
             mod_i = F["ab_i"] - F["a_i"] - F["b_i"]
             line = np.where(on_axis & fov, np.abs(mod), -1.0)
             peak_x = float(X.ravel()[line.argmax()] - X0)
+            # Scale by summed |response|: with strong direct inhibition the
+            # single-electrode sum in view can approach zero or turn negative.
+            scale = np.abs(lin[fov]).sum()
             out.append({
                 "separation_um": sep, "amp_ua": amp,
-                "net_fraction": float(mod[fov].sum() / lin[fov].sum()),
-                "direct_fraction": float(mod_d[fov].sum() / lin[fov].sum()),
-                "network_fraction": float(mod_i[fov].sum() / lin[fov].sum()),
+                "net_fraction": float(mod[fov].sum() / scale),
+                "direct_fraction": float(mod_d[fov].sum() / scale),
+                "network_fraction": float(mod_i[fov].sum() / scale),
+                "net_fraction_e1_view": float(
+                    mod[e1_view].sum() / np.abs(lin[e1_view]).sum()),
                 "peak_offset_from_e1_um": peak_x,
             })
     return out
@@ -325,7 +333,8 @@ def main() -> None:
         print(f"  {r['separation_um']:4.0f} um {r['amp_ua']:6.1f} uA  net "
               f"{100 * r['net_fraction']:+6.2f}  directly driven "
               f"{100 * r['direct_fraction']:+6.2f}  network-driven "
-              f"{100 * r['network_fraction']:+6.2f}  peak at "
+              f"{100 * r['network_fraction']:+6.2f}  E1 view "
+              f"{100 * r['net_fraction_e1_view']:+6.2f}  peak at "
               f"{r['peak_offset_from_e1_um']:.0f} um from E1")
 
     (RESULTS / "v2_validation.json").write_text(json.dumps(out, indent=2))

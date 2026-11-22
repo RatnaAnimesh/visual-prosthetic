@@ -9,6 +9,8 @@ The manuscript \\input{}s these, so no number in them is typed by hand.
     paper/tables/v2_sensitivity.tex   headline numbers across the parameters
                                       the literature does not pin down
     paper/tables/comparison.tex       measured parts against a pooled divisor
+    paper/tables/inhibition.tex       the inhibitory density against Kim et
+                                      al. and Dadarlat et al. together
 
 Run after prosthesis/run_all.py:
     python3 paper/v2_tables.py
@@ -300,9 +302,34 @@ def comparison() -> str:
             + body + "\n\\bottomrule\n\\end{tabular}\n")
 
 
+def inhibition() -> str:
+    d = load("v2_paper_inhibition.json")
+
+    def sgn(v, digits):
+        return _minus(f"{100 * v:+.{digits}f}")
+
+    lines = []
+    for r in d["rows"]:
+        kim = {x["amp_ua"]: x for x in r["kim"] if x["separation_um"] == 485.0}
+        k = f"{r['mult']:g}" + (" (calibrated)" if r["mult"] == 1.0 else "")
+        lines.append(" & ".join(
+            [k, f"{r['ie_ratio_300um_20ua']:.2f}"]
+            + [sgn(kim[a]["net_fraction"], 2) for a in (6.8, 12.7, 15.9)]
+            + [sgn(kim[12.7]["net_fraction_e1_view"], 2),
+               sgn(r["signed_100ua_0.4mm"], 1),
+               sgn(r["signed_300ua_0.4mm"], 1)]) + " \\\\")
+    return ("\\begin{tabular}{lrrrrrrr}\n\\toprule\n"
+            "inhibitory & I/E & \\multicolumn{4}{c}{paired net modulation, "
+            "485~\\um{} (\\%)} & \\multicolumn{2}{c}{signed, 0.4~mm (\\%)} "
+            "\\\\\n"
+            "site density & ratio & 6.8~\\uA & 12.7~\\uA & 15.9~\\uA & "
+            "12.7~\\uA$^\\ast$ & 100~\\uA & 300~\\uA \\\\\n\\midrule\n"
+            + "\n".join(lines) + "\n\\bottomrule\n\\end{tabular}\n")
+
+
 TABLES = {"structure.tex": structure, "human.tex": human,
           "v2_validation.tex": validation, "v2_sensitivity.tex": sensitivity,
-          "comparison.tex": comparison}
+          "comparison.tex": comparison, "inhibition.tex": inhibition}
 
 
 def main() -> None:

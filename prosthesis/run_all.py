@@ -32,7 +32,7 @@ JOBS = [
     ("v2_validate.py", "biophysical model: checks against measurements"),
     ("v2_experiments.py", "biophysical model: the paper's experiments"),
     ("v2_paper.py", "biophysical model: size, human data, repulsion, "
-                    "percepts, reach, encoder, power"),
+                    "percepts, reach, encoder, power, inhibition"),
 ]
 
 # phase7 reads phase1's calibration, phase9 reads phase1's separation sweep,
