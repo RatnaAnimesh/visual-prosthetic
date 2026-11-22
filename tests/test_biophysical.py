@@ -345,3 +345,19 @@ def test_recruitment_parameters_are_frozen():
     r = RecruitmentParams()
     with pytest.raises(Exception):
         r.K_ax = 1.0                              # type: ignore[misc]
+
+
+def test_local_recruitment_is_off_by_default_and_centred_when_on(fine):
+    from dataclasses import replace
+    g = fine._ensure_cortical_grid([X0], [Y0])
+    X, Y = np.meshgrid(g["xs"], g["ys"])
+    d = np.hypot(X - X0, Y - Y0)
+    he0, hi0 = fine.hits([20.0], [X0], [Y0], g)
+    on = BiophysicalCortex(step_um=26.75, margin_um=2600.0,
+                           recruit=replace(RecruitmentParams(), local_e=0.5, local_um=90.0))
+    he1, hi1 = on.hits([20.0], [X0], [Y0], on._ensure_cortical_grid([X0], [Y0]))
+    np.testing.assert_allclose(hi1, hi0)                     # local_i = 0
+    extra = he1 - he0
+    assert extra[d < 15].max() == pytest.approx(0.5, rel=0.02)  # local_e at 20 uA
+    assert extra[(d > 280) & (d < 300)].max() < 0.5 * np.exp(-4.5)
+    assert on.hits([0.0], [X0], [Y0], g)[0].max() == 0.0      # an electrode switched off

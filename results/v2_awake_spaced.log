@@ -1,0 +1,6 @@
+spaced: sparse 800 um done
+spaced: sparse 1200 um done
+spaced: awake_all 800 um done
+spaced: awake_all 1200 um done
+wrote results/v2_awake_spaced.json
+exit 0

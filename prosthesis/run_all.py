@@ -33,13 +33,15 @@ JOBS = [
     ("v2_experiments.py", "biophysical model: the paper's experiments"),
     ("v2_paper.py", "biophysical model: size, human data, repulsion, "
                     "percepts, reach, encoder, power, inhibition"),
+    ("v2_awake.py", "raw awake cells, human group thresholds, dense recruitment"),
 ]
 
 # phase7 reads phase1's calibration, phase9 reads phase1's separation sweep,
 # and phase6 recalibrates from the Dynaphos baseline, so the order above is a
 # dependency order.  v2_validate and v2_experiments depend on nothing above
 # them.  v2_paper reads phase1's Dynaphos sizes and separation sweep.  The v2
-# scripts run last because they are the slowest.  The figures and tables
+# scripts run last because they are the slowest.  v2_awake needs Dadarlat et
+# al.'s raw data and skips, keeping the committed results, when it is absent.  The figures and tables
 # (paper/make_figures.py, paper/v2_tables.py) read all of these and run after.
 
 

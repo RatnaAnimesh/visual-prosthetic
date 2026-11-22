@@ -143,6 +143,14 @@ class RecruitmentParams:
     # the sensitivity analysis (``v2_validate.py`` checks them).
     site_density_e: float = 9.0
     site_density_i: float = 6.0
+    # A local term, zero here.  In awake mouse V1 (Dadarlat et al.'s raw
+    # cells, ``prosthesis/dadarlat.py``) the cells that respond crowd within
+    # about 90 um of the tip at low current, which the axonal footprint above
+    # cannot produce.  Expected sites local_x (I/20 uA)^1.5 exp(-r^2/2L^2),
+    # a ball's volume law with a fixed reach.  ``AWAKE`` sets it.
+    local_e: float = 0.0
+    local_i: float = 0.0
+    local_um: float = 90.0
     # Tsodyks-Markram parameters used only to convert a pulse rate into the
     # equivalent undepressed presynaptic rate.
     U_e: float = 0.45
@@ -469,6 +477,12 @@ class BiophysicalCortex:
                 fi = gaussian_filter(fi, sb, mode="wrap")
             he += self.rp.site_density_e * vol_mm3 * fe
             hi += self.rp.site_density_i * vol_mm3 * fi
+            if self.rp.local_e > 0 or self.rp.local_i > 0:
+                X, Y = np.meshgrid(g["xs"], g["ys"])
+                ball = (a / 20.0) ** 1.5 * np.exp(
+                    -((X - xe) ** 2 + (Y - ye) ** 2) / (2 * self.rp.local_um ** 2))
+                he += self.rp.local_e * ball
+                hi += self.rp.local_i * ball
         return he, hi
 
     def recruited(self, amps, x_el, y_el, g):

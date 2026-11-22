@@ -11,7 +11,7 @@ model (``prosthesis/cortex_circuit.py``) appears in orange where it is the
 alternative being compared against, and on its own only in figure 11, which
 collects the predictions that would follow if cortex had a pooled divisor.
 
-Output: paper/figures/fig1.png ... fig11.png
+Output: paper/figures/fig1.png ... fig12.png
 
 Run:  python3 paper/make_figures.py [fig2 fig5 ...]
 """
@@ -748,7 +748,111 @@ def fig11():
     plt.close(fig)
 
 
-FIGS = (fig1, fig2, fig3, fig4, fig5, fig6, fig7, fig8, fig9, fig10, fig11)
+def fig12():
+    """Recruitment in awake cortex, read cell by cell, and what follows."""
+    c = load("v2_awake_cells.json")
+    hu = load("v2_awake_human.json")
+    pr = load("v2_awake_pairs.json")["rows"]
+    C_AWAKE = "#1b7837"   # green, so it is not read as the pooled divisor
+    fig, axes = plt.subplots(2, 2, figsize=(TWO_COL * 0.86, 4.1))
+    mids = np.array([50.0, 150.0, 250.0, 400.0])
+
+    ax = axes[0, 0]
+    prof = c["profiles"]["sig"]
+    for a, mk in ((10, "o"), (20, "s"), (50, "^")):
+        k, n = np.array(prof[f"e{a}"]).T
+        p = k / n
+        se = np.sqrt(p * (1 - p) / n)
+        ax.errorbar(mids, 100 * p, yerr=196 * se, fmt=mk, color="k", ms=2.6,
+                    lw=0.7, capsize=1.2, label=f"data, {a} µA")
+        ax.plot(mids, 100 * np.array(c["fits"]["sig_local"]["binned_prediction"][f"e{a}"]),
+                "-", color=C_AWAKE, lw=1.0)
+        ax.plot(mids, 100 * np.array(c["fits"]["sig_paper"]["binned_prediction"][f"e{a}"]),
+                "--", color=C_BIO, lw=1.0)
+    ax.plot([], [], "--", color=C_BIO, label="calibration (sparse)")
+    ax.plot([], [], "-", color=C_AWAKE, label="refitted to these cells")
+    ax.set_xlabel("distance from tip (µm)")
+    ax.set_ylabel("excitatory cells responding (%)")
+    ax.set_ylim(0, 95)
+    ax.legend(frameon=False, fontsize=5.0, loc="upper right")
+    panel(ax, "a", dx=-0.22)
+
+    ax = axes[0, 1]
+    amps = (10, 15, 20, 25, 30, 40, 50)
+    for lab, mk, off, name in (("sig", "o", -0.6, "any response"),
+                               ("early", "s", 0.6, "short-latency excitation")):
+        r = [c["site_ratio"][f"{lab}{a}"] for a in amps]
+        v = np.array([x["ratio"] for x in r])
+        lo = v - np.array([x["ci"][0] for x in r])
+        hi = np.array([x["ci"][1] for x in r]) - v
+        ax.errorbar(np.array(amps) + off, v, yerr=[lo, hi], fmt=mk, color="k",
+                    mfc="k" if lab == "sig" else "white", ms=2.6, lw=0.7,
+                    capsize=1.2, label=name)
+    ax.axhspan(1.37, 1.65, color=C_I, alpha=0.15, lw=0,
+               label="sparse model, Kim et al.'s sign")
+    ax.axhline(1.13, color=C_BIO, lw=0.9, ls="--", label="calibration")
+    ax.axvline(20, color="k", lw=0.4, ls=":")
+    ax.set_xlabel("current (µA)")
+    ax.set_ylabel("inhibitory / excitatory\nexpected sites within 300 µm")
+    ax.legend(frameon=False, fontsize=5.0, loc="upper right")
+    panel(ax, "b", dx=-0.24)
+
+    ax = axes[1, 0]
+    ns = np.array([1, 2, 4, 9, 16])
+    d = hu["data"]
+    m1 = d["1"][0]
+    obs = np.array([d[str(n)][0] for n in ns]) / m1
+    err = obs * np.hypot(np.array([d[str(n)][1] / d[str(n)][0] for n in ns]),
+                         d["1"][1] / m1)
+    err[0] = d["1"][1] / m1
+    ax.errorbar(ns, obs, yerr=err, fmt="o", color="k", ms=3, lw=0.7, capsize=1.2,
+                label="human")
+    for var, add, col, ls, name in (("sparse", False, C_BIO, "--", "sparse"),
+                                    ("awake_all", False, C_AWAKE, "-", "dense"),
+                                    ("awake_all", True, C_AWAKE, ":", "dense, added")):
+        row = next(q for q in hu["rows"] if q["variant"] == var and q["additive"] == add
+                   and q["single_ua"] == m1 and q["sigma_um"] == 100.0)
+        ax.plot(ns, [row["ratios"][str(n)] for n in ns], ls, color=col, lw=1.1,
+                label=f"{name} ($\\chi^2$ {row['chi2']:.1f})")
+    ax.plot(ns, ns ** (-1 / 3.3), "-.", color="0.55", lw=0.9,
+            label="summation ($\\chi^2$ 2.0)")
+    sp = next(q for q in load("v2_awake_spaced.json")["rows"] if q["variant"] == "awake_all"
+              and q["pitch_um"] == 1200.0 and q["sigma_um"] == 100.0)
+    ax.plot(ns, [sp["ratios"][str(n)] for n in ns], "-", color=C_AWAKE, lw=0.8,
+            alpha=0.45, marker="x", ms=2.6, label="dense, 1.2 mm apart")
+    ax.set_xscale("log")
+    ax.set_xticks(ns)
+    ax.set_xticklabels([str(n) for n in ns])
+    ax.set_ylim(0, 1.68)
+    ax.set_yticks([0, 0.2, 0.4, 0.6, 0.8, 1.0])
+    ax.set_xlabel("contiguous electrodes driven together")
+    ax.set_ylabel("threshold per electrode\n/ single threshold")
+    ax.legend(frameon=False, fontsize=5.0, loc="upper center", ncol=2,
+              columnspacing=0.8, handlelength=1.8, borderaxespad=0.2)
+    panel(ax, "c", dx=-0.22)
+
+    ax = axes[1, 1]
+    seps = sorted({r["separation_um"] for r in pr})
+    for var, col, ls in (("sparse", C_BIO, "--"), ("awake_all", C_AWAKE, "-")):
+        for amp, mk in ((100.0, "o"), (300.0, "s")):
+            v = [100 * _row(pr, variant=var, amp_ua=amp, separation_um=s)["signed_total"]
+                 for s in seps]
+            ax.plot(np.array(seps) / 1000, v, ls, marker=mk, color=col, ms=2.4,
+                    lw=1.0, mfc=col if amp == 100.0 else "white",
+                    label=f"{'sparse' if var == 'sparse' else 'dense'}, {amp:.0f} µA")
+    ax.axhline(0, color="k", lw=0.5, ls=":")
+    ax.set_xlabel("separation (mm)")
+    ax.set_ylabel("signed interaction (%)")
+    ax.legend(frameon=False, fontsize=5.0, loc="lower right")
+    panel(ax, "d", dx=-0.22)
+
+    fig.tight_layout(w_pad=1.6, h_pad=1.2)
+    fig.savefig(OUT / "fig12.png")
+    plt.close(fig)
+
+
+FIGS = (fig1, fig2, fig3, fig4, fig5, fig6, fig7, fig8, fig9, fig10, fig11,
+        fig12)
 
 
 def main() -> None:

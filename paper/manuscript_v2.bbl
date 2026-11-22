@@ -1,4 +1,4 @@
-\begin{thebibliography}{39}
+\begin{thebibliography}{41}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -230,6 +230,12 @@ J.~A. Varela, K.~Sen, J.~Gibson, J.~Fost, L.~F. Abbott, and S.~B. Nelson.
   synapses in layer 2/3 of rat primary visual cortex.
 \newblock \emph{Journal of Neuroscience}, 17:\penalty0 7926--7940, 1997.
 
+\bibitem[Dadarlat et~al.(2023)Dadarlat, Sun, and Stryker]{dadarlat2023data}
+M.~C. Dadarlat, Y.~J. Sun, and M.~P. Stryker.
+\newblock Activity-dependent recruitment of inhibition and excitation in the
+  awake mammalian cortex during electrical stimulation.
+\newblock Mendeley Data, version 2, CC BY 4.0, 2023.
+
 \bibitem[Rojer and Schwartz(1990)]{rojer1990}
 A.~S. Rojer and E.~L. Schwartz.
 \newblock Cat and monkey cortical columnar patterns modeled by
@@ -252,6 +258,15 @@ J.~J. Nassi, M.~C. Avery, A.~H. Cetin, A.~W. Roe, and J.~H. Reynolds.
 \newblock Optogenetic activation of normalization in alert macaque visual
   cortex.
 \newblock \emph{Neuron}, 86:\penalty0 1504--1517, 2015.
+
+\bibitem[Fern{\'a}ndez et~al.(2021)Fern{\'a}ndez, Alfaro, Soto-S{\'a}nchez,
+  Gonzalez-Lopez, Lozano, Pe{\~n}a, et~al.]{fernandez2021}
+E.~Fern{\'a}ndez, A.~Alfaro, C.~Soto-S{\'a}nchez, P.~Gonzalez-Lopez, A.~M.
+  Lozano, S.~Pe{\~n}a, et~al.
+\newblock Visual percepts evoked with an intracortical 96-channel
+  microelectrode array inserted in human occipital cortex.
+\newblock \emph{J. Clin. Invest.}, 131\penalty0 (23):\penalty0 e151331, 2021.
+\newblock \doi{10.1172/JCI151331}.
 
 \bibitem[Adams et~al.(2007)Adams, Sincich, and Horton]{adams2007}
 D.~L. Adams, L.~C. Sincich, and J.~C. Horton.

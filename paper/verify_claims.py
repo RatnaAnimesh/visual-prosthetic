@@ -798,6 +798,181 @@ def inhibition_sweep():
     check("3.5 ... three times", max(ks), 3.0, 0, "x")
 
 
+def awake():
+    """2.3 and 3.6: the model against raw cells from awake cortex."""
+    c = load("v2_awake_cells.json")
+    check("2.3 excitatory cells", c["n_cells"] - c["n_inhibitory"], 6162, 0)
+    check("2.3 inhibitory cells", c["n_inhibitory"], 532, 0)
+    check("3.6 cells in all", c["n_cells"], 6694, 0)
+    pf = c["published_fractions"]
+    pct1("2.3 excitatory modulated at 40 uA", pf["40"]["e"], 49.0)
+    pct1("2.3 inhibitory modulated at 40 uA", pf["40"]["i"], 54.0)
+    pct1("2.3 inhibitory at 10 uA", pf["10"]["i"], 11.1)
+    pct1("2.3 excitatory at 5 uA", pf["5"]["e"], 2.7)
+    check("2.3 fitted site from the code's convention (mean)",
+          float(np.mean([x["from_code_um"] for x in c["sites"]])), 64, 0.5, "um")
+
+    f, prof = c["fits"], c["profiles"]["sig"]
+    fm = c["field_medians"]
+    check("3.2 imaged field, model I median at 50 uA", fm["calibration_i50"], 206, 0.5, "um")
+    check("3.2 imaged field, model E median at 50 uA", fm["calibration_e50"], 222, 0.5, "um")
+    check("3.2 imaged field, data I median at 50 uA", fm["data_i50"], 220, 0.5, "um")
+    check("3.2 imaged field, data E median at 50 uA", fm["data_e50"], 222, 0.5, "um")
+
+    def obs(a, b=0):
+        k, n = prof[f"e{a}"][b]
+        return k / n
+
+    pct1("3.6 E responding within 100 um at 10 uA", obs(10), 18.4)
+    pct1("3.6 ... calibration predicts", f["sig_paper"]["binned_prediction"]["e10"][0], 2.4)
+    pct1("3.6 E responding within 100 um at 50 uA", obs(50), 79.6)
+    pct1("3.6 ... calibration predicts", f["sig_paper"]["binned_prediction"]["e50"][0], 10.7)
+    true("3.6 shortfall at every distance out to 500 um, 10-50 uA",
+         all(obs(a, b) > f["sig_paper"]["binned_prediction"][f"e{a}"][b]
+             for a in (10, 15, 20, 25, 30, 40, 50) for b in range(4)))
+    check("3.6 AIC drop, densities refitted",
+          f["sig_paper"]["aic"] - f["sig_densities"]["aic"], 33400, 50)
+    check("3.6 refitted excitatory density", f["sig_densities"]["s_e"], 104, 0.5)
+    check("3.6 refitted inhibitory density", f["sig_densities"]["s_i"], 79, 0.5)
+    check("3.6 AIC drop, local term", f["sig_densities"]["aic"] - f["sig_local"]["aic"],
+          990, 5)
+    check("3.6 local reach", f["sig_local"]["L_um"], 88, 0.5, "um")
+    check("3.6 E density over calibration", f["sig_local"]["s_e"] / 9, 9.1, 0.05, "x")
+    check("3.6 I density over calibration", f["sig_local"]["s_i"] / 6, 12.8, 0.05, "x")
+    check("3.6 short-latency E over calibration", f["early_local"]["s_e"] / 9, 6.8, 0.05, "x")
+    check("3.6 short-latency I over calibration", f["early_local"]["s_i"] / 6, 7.7, 0.05, "x")
+    check("3.6 short-latency core", f["early_local"]["L_um"], 90, 0.5, "um")
+
+    r = c["site_ratio"]
+    for key, want in (("sig20", (1.47, 1.00, 1.98)), ("early20", (1.23, 0.80, 1.72))):
+        check(f"3.6 I/E {key}", r[key]["ratio"], want[0], 0.005)
+        check(f"3.6 I/E {key} low", r[key]["ci"][0], want[1], 0.005)
+        check(f"3.6 I/E {key} high", r[key]["ci"][1], want[2], 0.005)
+    check("3.6 I/E sig10", r["sig10"]["ratio"], 1.72, 0.005)
+    check("3.6 I/E early10", r["early10"]["ratio"], 1.94, 0.005)
+    hi = [r[f"{lab}{a}"]["ratio"] for lab in ("sig", "early") for a in (40, 50)]
+    check("3.6 I/E at 40-50 uA, lowest", min(hi), 0.89, 0.005)
+    check("3.6 I/E at 40-50 uA, highest", max(hi), 1.13, 0.005)
+    true("3.6 1.37-1.65 and the calibration's 1.13 inside both 20 uA intervals",
+         all(r[k]["ci"][0] <= 1.13 and r[k]["ci"][1] >= 1.65 for k in ("sig20", "early20")))
+
+    k = load("v2_awake_kim.json")
+    by = {b["mult"]: b for b in k["by_mult"]}
+
+    def net(m, sep, key="net_fraction"):
+        return [x[key] for x in by[m]["rows"] if x["separation_um"] == sep]
+
+    for m, ratio, want in ((1.0, 1.20, (-0.50, -1.29, -1.80)),
+                           (1.25, 1.50, (0.39, 0.21, -0.13)),
+                           (1.5, 1.79, (2.02, 2.44, 2.11))):
+        check(f"3.6 dense x{m} ratio", by[m]["ie_ratio_20ua"], ratio, 0.005)
+        for a, got, w in zip((6.8, 12.7, 15.9), net(m, 485.0), want):
+            check(f"3.6 dense x{m} net at 485 um, {a} uA", 100 * got, w, 0.005, "%")
+    seps = (370.0, 485.0, 558.0, 850.0)
+    avg = np.mean([net(1.25, s_) for s_ in seps], axis=0)
+    for a, got, w in zip((6.8, 12.7, 15.9), avg, (0.66, 0.64, 0.34)):
+        check(f"3.6 dense x1.25 net over separations, {a} uA", 100 * got, w, 0.005, "%")
+    true("3.6 x1.25 network-driven enhanced and direct attenuated everywhere",
+         all(x["network_fraction"] > 0 and x["direct_fraction"] < 0
+             for x in by[1.25]["rows"]))
+    for key, want in (("direct_fraction", (-0.64, -1.54, -2.09)),
+                      ("network_fraction", (2.67, 3.98, 4.20))):
+        for a, got, w in zip((6.8, 12.7, 15.9), net(1.5, 485.0, key), want):
+            check(f"3.6 dense x1.5 {key} at {a} uA", 100 * got, w, 0.005, "%")
+
+    h = load("v2_awake_human.json")["rows"]
+
+    def chi(var, add, single=73.5, sigma=100.0):
+        return next(q["chi2"] for q in h if q["variant"] == var and q["additive"] == add
+                    and q["single_ua"] == single and q["sigma_um"] == sigma)
+
+    at = [q for q in h if q["single_ua"] == 73.5]
+    tot = [q for q in at if q["sigma_um"] is None]
+    check("3.8 total readout chi2, lowest", min(q["chi2"] for q in tot), 22, 0.5)
+    check("3.8 total readout chi2, highest", max(q["chi2"] for q in tot), 32, 0.5)
+    check("3.8 total readout pair ratio, lowest", min(q["ratios"]["2"] for q in tot), 0.55, 0.005)
+    check("3.8 total readout pair ratio, highest", max(q["ratios"]["2"] for q in tot), 0.63, 0.005)
+    check("3.8 smoothing wider than 200 um, lowest chi2",
+          min(q["chi2"] for q in h if q["sigma_um"] in (400.0, 800.0)), 13, 0.5)
+    check("3.8 sparse, occupancy", chi("sparse", False), 3.2, 0.05)
+    check("3.8 sparse, added", chi("sparse", True), 3.8, 0.05)
+    check("3.8 dense, occupancy", chi("awake_all", False), 3.5, 0.05)
+    check("3.8 short-latency, occupancy", chi("awake_fast", False), 3.2, 0.05)
+    check("3.8 dense, added, best readout",
+          min(q["chi2"] for q in at if q["variant"] == "awake_all" and q["additive"]), 15.3, 0.05)
+    check("3.8 short-latency, added, best readout",
+          min(q["chi2"] for q in at if q["variant"] == "awake_fast" and q["additive"]), 8.6, 0.05)
+    true("3.8 dense, added, rejected at 150 uA too",
+         min(q["chi2"] for q in h if q["variant"] == "awake_all" and q["additive"]
+             and q["single_ua"] == 150.0) > 15.3)
+    check("3.8 dense, added, at 35 uA", chi("awake_all", True, 35.0), 2.7, 0.05)
+    pair = [q["ratios"]["2"] for q in at if q["variant"] == "awake_all" and q["additive"]
+            and q["sigma_um"] is not None]
+    true("3.8 added overlap lets a pair match one electrode at about half the current",
+         0.5 <= min(pair) and max(pair) <= 0.6)
+    sys.path.insert(0, str(ROOT))
+    from prosthesis.v2_awake import FERNANDEZ, WEIBULL, chi2
+    check("3.8 probability summation slope", WEIBULL, 3.3, 0)
+    check("3.8 probability summation chi2",
+          chi2({n: n ** (-1 / WEIBULL) for n in (2, 4, 9, 16)}), 2.0, 0.05)
+    check("3.8 per-electrode threshold for 16", FERNANDEZ[16][0], 28.1, 0)
+    pr = load("v2_awake_pairs.json")["rows"]
+
+    def pq(var, amp, sep, key="signed_total"):
+        return next(x[key] for x in pr if x["variant"] == var and x["amp_ua"] == amp
+                    and x["separation_um"] == sep)
+
+    for amp, w, pk in ((50.0, -3.0, 28), (100.0, -10.1, 46), (300.0, -23.2, 50)):
+        pct1(f"3.6 dense signed at {amp:.0f} uA, 0.4 mm", pq("awake_all", amp, 400.0), w)
+        pct0(f"3.6 dense peak at {amp:.0f} uA, 0.4 mm", pq("awake_all", amp, 400.0, "max_dev"), pk)
+    for amp, w, pk in ((100.0, -2.0, 10), (300.0, -7.7, 32)):
+        pct1(f"3.6 sparse signed at {amp:.0f} uA, 0.4 mm, same grid", pq("sparse", amp, 400.0), w)
+        pct0(f"3.6 sparse peak at {amp:.0f} uA, 0.4 mm, same grid",
+             pq("sparse", amp, 400.0, "max_dev"), pk)
+    seps = sorted({x["separation_um"] for x in pr})
+    true("3.6 dense peak largest at the shortest separation, every current",
+         all(pq("awake_all", a, 400.0, "max_dev") >= max(pq("awake_all", a, s_, "max_dev")
+                                                        for s_ in seps)
+             for a in (10.0, 50.0, 100.0, 300.0)))
+    true("3.6 dense signed suppressive at 0.4 mm from 50 uA up",
+         all(pq("awake_all", a, 400.0) < 0 for a in (50.0, 100.0, 300.0)))
+    pct1("3.6 dense facilitation at 1.6 mm, 100 uA", pq("awake_all", 100.0, 1600.0), 3.6)
+    pct1("3.6 dense facilitation at 2.4 mm, 300 uA", pq("awake_all", 300.0, 2400.0), 5.7)
+    true("4.3 signed error under 4% at 100 uA from 1.2 mm, both models",
+         max(abs(pq(v, 100.0, s_)) for v in ("sparse", "awake_all")
+             for s_ in seps if s_ >= 1200.0) < 0.04)
+    mp = load("v2_awake_maps.json")
+    sm = mp["summary"]
+    for key, mean, sd in (("sparse_100_signed_total", -2.9, 0.8),
+                          ("awake_all_100_signed_total", -12.5, 2.3),
+                          ("sparse_300_signed_total", -9.1, 1.6),
+                          ("awake_all_300_signed_total", -23.9, 0.9)):
+        pct1(f"3.6 twelve maps, {key} mean", sm[key]["mean"], mean)
+        pct1(f"3.6 twelve maps, {key} sd", sm[key]["sd"], sd)
+    pct1("3.3 twelve maps, sparse 100 uA lowest", sm["sparse_100_signed_total"]["min"], -4.5)
+    pct1("3.3 twelve maps, sparse 100 uA highest", sm["sparse_100_signed_total"]["max"], -2.0)
+    pct0("abstract twelve maps, sparse peak at 300 uA", sm["sparse_300_max_dev"]["mean"], 33)
+    pct0("abstract twelve maps, dense peak at 300 uA", sm["awake_all_300_max_dev"]["mean"], 50)
+    true("3.6 the paper's map is the least suppressive of the twelve, both models",
+         all(next(r["signed_total"] for r in mp["rows"] if r["variant"] == v
+                  and r["amp_ua"] == 100.0 and r["seed"] == 0)
+             == sm[f"{v}_100_signed_total"]["max"] for v in ("sparse", "awake_all")))
+    sp = load("v2_awake_spaced.json")
+    for n, w in zip(("2", "4", "9", "16"), (0.81, 0.66, 0.51, 0.43)):
+        check(f"4.2 probability summation, {n} electrodes", sp["probability_summation"][n], w, 0.005)
+
+    def spaced(var, pitch, n):
+        return next(q["ratios"][n] for q in sp["rows"] if q["variant"] == var
+                    and q["pitch_um"] == pitch and q["sigma_um"] == 100.0)
+
+    check("4.2 dense, 16 at 0.8 mm", spaced("awake_all", 800.0, "16"), 0.86, 0.005)
+    check("4.2 dense, 16 at 1.2 mm", spaced("awake_all", 1200.0, "16"), 0.94, 0.005)
+    check("4.2 sparse, 16 at 0.8 mm", spaced("sparse", 800.0, "16"), 0.81, 0.005)
+    check("4.2 sparse, 16 at 1.2 mm", spaced("sparse", 1200.0, "16"), 0.95, 0.005)
+    check("4.2 dense, 4 at 1.2 mm", spaced("awake_all", 1200.0, "4"), 0.96, 0.005)
+    check("4.2 sparse, 4 at 1.2 mm", spaced("sparse", 1200.0, "4"), 0.97, 0.005)
+
+
 def tables_current():
     """The tables the manuscript inputs are what v2_tables.py writes now."""
     sys.path.insert(0, str(ROOT / "paper"))
@@ -810,7 +985,7 @@ def tables_current():
 
 SECTIONS = (structure, methods_constants, validation, magnitude, human,
             arrays, sequence, pooled_gain, percepts, encoder, power,
-            inhibition_sweep, tables_current)
+            inhibition_sweep, awake, tables_current)
 
 
 def main() -> int:

@@ -1,0 +1,6 @@
+kim: x1.0 ratio 1.20 net at 485 um -0.50 -1.29 -1.80
+kim: x1.25 ratio 1.50 net at 485 um +0.39 +0.21 -0.13
+kim: x1.5 ratio 1.79 net at 485 um +2.02 +2.44 +2.11
+kim: x2.0 ratio 2.37 net at 485 um +8.96 +9.26 +8.07
+wrote results/v2_awake_kim.json
+exit 0

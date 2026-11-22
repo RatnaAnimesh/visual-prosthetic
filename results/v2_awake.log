@@ -1,0 +1,70 @@
+wrote results/v2_awake_cells.json
+human: sparse done
+human: awake_all done
+human: awake_fast done
+wrote results/v2_awake_human.json
+pairs: sparse 10 uA 400 um -0.06%
+pairs: sparse 10 uA 800 um -0.10%
+pairs: sparse 10 uA 1200 um -0.06%
+pairs: sparse 10 uA 1600 um -0.05%
+pairs: sparse 10 uA 2400 um +0.02%
+pairs: sparse 50 uA 400 um -0.73%
+pairs: sparse 50 uA 800 um -0.98%
+pairs: sparse 50 uA 1200 um -0.54%
+pairs: sparse 50 uA 1600 um -0.43%
+pairs: sparse 50 uA 2400 um +0.17%
+pairs: sparse 100 uA 400 um -2.02%
+pairs: sparse 100 uA 800 um -2.09%
+pairs: sparse 100 uA 1200 um -1.09%
+pairs: sparse 100 uA 1600 um -0.69%
+pairs: sparse 100 uA 2400 um +0.46%
+pairs: sparse 300 uA 400 um -7.67%
+pairs: sparse 300 uA 800 um -3.52%
+pairs: sparse 300 uA 1200 um -0.43%
+pairs: sparse 300 uA 1600 um +1.23%
+pairs: sparse 300 uA 2400 um +1.78%
+pairs: awake_all 10 uA 400 um +0.29%
+pairs: awake_all 10 uA 800 um -0.33%
+pairs: awake_all 10 uA 1200 um +0.00%
+pairs: awake_all 10 uA 1600 um -0.08%
+pairs: awake_all 10 uA 2400 um +0.14%
+pairs: awake_all 50 uA 400 um -3.02%
+pairs: awake_all 50 uA 800 um -0.74%
+pairs: awake_all 50 uA 1200 um +0.56%
+pairs: awake_all 50 uA 1600 um +1.22%
+pairs: awake_all 50 uA 2400 um +1.33%
+pairs: awake_all 100 uA 400 um -10.12%
+pairs: awake_all 100 uA 800 um -4.04%
+pairs: awake_all 100 uA 1200 um +0.92%
+pairs: awake_all 100 uA 1600 um +3.65%
+pairs: awake_all 100 uA 2400 um +2.66%
+pairs: awake_all 300 uA 400 um -23.22%
+pairs: awake_all 300 uA 800 um -14.30%
+pairs: awake_all 300 uA 1200 um -3.98%
+pairs: awake_all 300 uA 1600 um +3.17%
+pairs: awake_all 300 uA 2400 um +5.74%
+pairs: awake_fast 10 uA 400 um -0.35%
+pairs: awake_fast 10 uA 800 um -0.63%
+pairs: awake_fast 10 uA 1200 um -0.39%
+pairs: awake_fast 10 uA 1600 um -0.32%
+pairs: awake_fast 10 uA 2400 um +0.13%
+pairs: awake_fast 50 uA 400 um -3.65%
+pairs: awake_fast 50 uA 800 um -2.33%
+pairs: awake_fast 50 uA 1200 um -0.95%
+pairs: awake_fast 50 uA 1600 um -0.05%
+pairs: awake_fast 50 uA 2400 um +1.08%
+pairs: awake_fast 100 uA 400 um -9.01%
+pairs: awake_fast 100 uA 800 um -4.00%
+pairs: awake_fast 100 uA 1200 um +0.13%
+pairs: awake_fast 100 uA 1600 um +2.41%
+pairs: awake_fast 100 uA 2400 um +2.18%
+pairs: awake_fast 300 uA 400 um -20.93%
+pairs: awake_fast 300 uA 800 um -11.95%
+pairs: awake_fast 300 uA 1200 um -1.90%
+pairs: awake_fast 300 uA 1600 um +4.46%
+pairs: awake_fast 300 uA 2400 um +5.42%
+wrote results/v2_awake_pairs.json
+maps: sparse done
+maps: awake_all done
+wrote results/v2_awake_maps.json
+exit 0

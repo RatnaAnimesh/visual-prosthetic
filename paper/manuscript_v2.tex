@@ -79,21 +79,27 @@ Cortical Visual Prostheses}
     published stabilised supralinear model of layer~2/3, used without
     retuning. Two numbers are fitted, neither to multi-electrode data. The
     model reproduces surround suppression, the sparse filling-in of
-    recruitment, the spatial pattern of inhibitory recruitment, suppression
+    recruitment, suppression
     of ongoing activity and sub-additive summation of visual and electrical
     drive. Its single-electrode phosphene matches the Dynaphos size at
-    100~\uA{} without being fitted to it. It misses the net enhancement
-    reported for paired electrodes in mouse. It gains that enhancement if
-    electrodes drive at least a fifth more inhibitory cells than measured,
-    but never loses it again at higher current as the data do.
+    100~\uA{} without being fitted to it. Set against 6,694 raw cells from
+    awake mouse cortex, the calibration predicts a tenth of the responses.
+    Refitted to every responding cell, recruitment is bounded from above.
+    With that recruitment and the inhibitory ratio the raw cells give, the
+    model gains a small net enhancement for paired electrodes that shrinks
+    at the highest current, close to what was reported in mouse. Sparse
+    recruitment never produced the decline.
 
     \smallskip
     \noindent Electrodes in this model interact mostly through occupancy. A
-    cell reached by two electrodes fires once. Interaction is small at
-    clinical currents ($-2.6$\% summed over cortex at 100~\uA{} and
-    0.4~mm), reaches 31\% at its largest point at 300~\uA, peaks at the
-    shortest separation in all nineteen parameter variants tested and falls
-    to a tenth by 2.6~mm. It does not reverse sign with drive, dim the later
+    cell reached by two electrodes fires once. Summed over cortex at
+    100~\uA{} and 0.4~mm, interaction averaged over twelve orientation maps
+    is $-2.9$\% with the calibrated recruitment and $-12.5$\% with
+    recruitment as dense as in awake cortex, and its largest point at
+    300~\uA{} reaches 33 to 50\%. Which end holds depends on what fraction
+    of the responding cells an electrode drives directly. It peaks at the
+    shortest separation in all nineteen parameter variants tested and with
+    dense recruitment. It does not reverse sign with drive, dim the later
     of two sequential phosphenes, or cap what an array delivers. One hundred
     electrodes at 400~\um{} pitch deliver 46 times one electrode at
     300~\uA. Five electrodes change the decoded percept by 12\%, and
@@ -101,7 +107,11 @@ Cortical Visual Prostheses}
     pattern and 91\% of the intended contrast. At the separations of the human
     surface-electrode data the model predicts at most 6\% interaction even at
     4~mA, too little to explain the changes in phosphene size reported
-    there.
+    there. In a blind volunteer, thresholds for groups of up to sixteen
+    Utah electrodes fit the model with occupancy and reject dense
+    recruitment without it, but fit probability summation in perception as
+    well. The same groups on every third electrode would tell them apart,
+    at 0.94 of the single threshold for sixteen electrodes against 0.43.
 
     \smallskip
     \noindent A pooled divisor, the alternative we test against, would
@@ -110,10 +120,10 @@ Cortical Visual Prostheses}
     separation. A measurement of interaction at a few separations, with a
     standard error of 20 percentage points at each, tells the two apart. At
     moderate currents the sign of the interaction turns on how many
-    inhibitory cells an electrode drives directly, a quantity measured once.
-    Read through the model, the paired-electrode data in mouse put it at
-    least a fifth higher, enough to shrink the suppression at 100~\uA{}
-    from 2.6\% to at most 1.5\%.
+    inhibitory cells an electrode drives directly. Read from the raw cells,
+    the ratio of inhibitory to excitatory recruitment near the tip at
+    20~\uA{} is 1.47 (95\% interval 1.00--1.98). That agrees with the
+    paired-electrode data and leaves the sign open.
     \end{minipage}
     \end{center}
     \bigskip
@@ -347,6 +357,46 @@ responses. The same two measures computed on the part of the response
 carried by directly driven cells depend on occupancy alone, and we report
 them as the occupancy share.
 
+\subsection{Raw cells from awake cortex}
+\label{sec:rawmethods}
+
+Dadarlat \textit{et al.} shared the Suite2p output and analysis code behind
+their study \citep{dadarlat2023data}. They imaged 6,162 excitatory and 532
+inhibitory cells in layer~2/3 of five awake mice while one electrode
+delivered 25 pulses at 250~Hz, ten times at each of nine currents from 3
+to 50~\uA{} \citep{dadarlat2024}. We reclassified every cell from the
+traces with the authors' own test. A rank-sum across trials compares the
+pre-stimulus baseline with an early and a late window, at $p\le0.02$, and
+trials that follow a 30, 40 or 50~\uA{} trial are dropped. This reproduces
+their published fractions to the stated precision (49.0\% of excitatory
+and 54.0\% of inhibitory cells modulated at 40~\uA, 11.1\% of inhibitory
+cells at 10~\uA{} and 2.7\% of excitatory cells at 5~\uA). We count two
+kinds of response. Any significant modulation is what their headline
+fractions count. Excitation in the early window is the short-latency
+class, the one closest to direct drive. Distances to the tip follow the
+authors' code. The site that best explains each mouse's responses, fitted
+from the responses alone, lies 64~\um{} from it on average.
+
+To set the model against these cells we asked, for each cell and each
+current, how likely the model makes a response. A cell at distance $r$
+responds with probability $f + (1-f)(1-e^{-h})$, where $f$ is a floor of
+false positives and $h$ is the model's expected number of
+excitable sites per cell, averaged over sixteen tip positions on the
+orientation map. The model's network changes the rate of cells it does
+not drive by under half a hertz at these currents, far below what imaging
+detects, so in the model a responding cell is a driven one. Refitted
+variants keep the model's recruitment kernel and scale its two site
+densities, and one adds a local term
+$s_\mathrm{loc}(I/20\,\mu\mathrm{A})^{1.5}e^{-r^2/2L^2}$, the volume law
+of a ball with a fixed reach. The calibration as it stands is scored with
+$f$ set to the fraction that responds at 3~\uA, where it drives almost
+nobody, so that the floor cannot absorb its misfit. The refitted variants
+fit $f$ with the rest, by binomial likelihood over every cell at every
+current, and are compared by AIC. Ratios near the tip use
+$-\ln(1-f)$ for each cell type, with the 3~\uA{} fraction removed, so that
+saturation of a fraction does not pull the ratio toward one. Intervals come
+from a hierarchical bootstrap that resamples mice and then cells.
+
 \subsection{The alternative, a pooled divisor}
 \label{sec:pooledmethods}
 
@@ -513,9 +563,11 @@ describe \citep{histed2009}. The distances in Kumaravelu \textit{et al.}
 grow faster, from 294 to 455~\um{} \citep{kumaravelu2022}, and the model
 falls short of that. Part of the gap is that theirs are three-dimensional
 distances in a layered column and ours lie in one sheet. Inhibitory cells
-are recruited nearer the tip than excitatory ones (242 against 372~\um{}
-at 50~\uA), as Dadarlat \textit{et al.} found, although only their overall
-ratio was fitted. Stimulation suppresses ongoing firing around the
+are recruited nearer the tip than excitatory ones over the sheet (242
+against 372~\um{} at 50~\uA). The raw cells do not show this. Read over
+the same imaged cells, the model puts the median responding inhibitory
+cell at 206~\um{} and excitatory cell at 222~\um, and the data put them at
+220 and 222~\um{} (section~\ref{sec:awake}). Stimulation suppresses ongoing firing around the
 electrode \citep{butovas2003}, and electrical drive combined with a
 grating at the same site sums to 0.79--0.96 of the two alone, the
 sub-additivity Nassi \textit{et al.} measured \citep{nassi2015}
@@ -545,8 +597,9 @@ variability as the missing ingredient. In it, silencing inhibition or
 removing noise each increased the enhancement between the electrodes
 \citep{kim2025}. Section~\ref{sec:twoconstraints} asks whether a different
 inhibitory density closes the gap. It closes the sign at 12.7~\uA{} but
-not the return to zero at 15.9~\uA, and we count the comparison as a
-miss.
+not the return to zero at 15.9~\uA, and with sparse recruitment we count
+the comparison as a miss. Recruitment fitted to awake cells comes closer
+(section~\ref{sec:awake}).
 
 Read out through the implant's retinotopy, one electrode at 100~\uA{}
 produces a phosphene 0.124\textdegree{} across at half maximum, against
@@ -562,8 +615,8 @@ doubles, it grows from 0.11\textdegree{} at 50~\uA{} to 0.34\textdegree{}
 at 600~\uA, 1.1 to 1.5 times the Dynaphos size. The two estimates bracket
 the baseline. Which of them a subject would report is not known.
 
-\subsection{Interaction is small at clinical currents and largest at the
-shortest separation}
+\subsection{With calibrated recruitment interaction is small at clinical
+currents and largest at the shortest separation}
 \label{sec:magnitude}
 
 At 0.4~mm the signed interaction is $-0.1$\% at 10~\uA, $-1.0$\% at
@@ -572,7 +625,10 @@ At 0.4~mm the signed interaction is $-0.1$\% at 10~\uA, $-1.0$\% at
 alone gives $-2.6$\% and $-10.9$\% at 100 and 300~\uA. The network adds
 a little facilitation at intermediate range, up to $+1.9$\% at 2.4~mm and
 300~\uA, so at that current the summed interaction changes sign with
-separation, between 0.8 and 1.2~mm (figure~\ref{fig:f5}(a)).
+separation, between 0.8 and 1.2~mm (figure~\ref{fig:f5}(a)). These
+numbers come from one orientation map on a 107~\um{} grid. Over twelve
+maps on a 53.5~\um{} grid the signed interaction at 100~\uA{} and 0.4~mm
+is $-2.9\pm0.8$\%, from $-4.5$ to $-2.0$\% (section~\ref{sec:awake}).
 
 At its largest point the departure from superposition reaches 30.7\% at
 0.4~mm and 300~\uA, between the pooled divisor's 18.0\% and pointwise
@@ -669,8 +725,10 @@ against 1.13 at calibration and about 1.1 measured. The interaction at
 top of that range. At 300~\uA{} it stays suppressive at every density
 tested.
 
-Inside this model the two mouse datasets therefore disagree by at least a
-fifth in the I/E ratio. Kim \textit{et al.}'s sign gives only a lower bound
+Against the published ratio of about 1.1, the two mouse datasets therefore
+disagree by at least a fifth inside this model. Section~\ref{sec:awake}
+reads the ratio from the raw cells instead, and there the disagreement
+goes. Kim \textit{et al.}'s sign gives only a lower bound
 on the density, and at that bound the interaction at 100~\uA{} is
 $-1.5$\%. If their sign is right, the suppression at 100~\uA{} is at most
 1.5\%, against 2.6\% at calibration, or the interaction is facilitatory.
@@ -684,15 +742,16 @@ to zero came from attenuation of the strongly driven cells, which at the
 highest current were more than half of those imaged. The model's directly
 driven cells are attenuated too, but at no density does their attenuation
 overtake the network's enhancement once that has appeared. This part of
-the miss does not depend on the inhibitory density, and a model with
-single cells would have to explain it.
+the miss does not depend on the inhibitory density. It does depend on how
+many cells an electrode recruits (section~\ref{sec:awake}).
 
 \begin{table*}[t]
 \centering
 \caption{Direct inhibitory recruitment against the two mouse datasets.
   Inhibitory site density is relative to the calibrated value. The I/E
-  ratio is that of recruited cells within 300~\um{} at 20~\uA, measured as
-  about 1.1 \citep{dadarlat2024}. Paired net modulation is for electrodes
+  ratio is that of recruited cells within 300~\um{} at 20~\uA, published
+  as about 1.1 \citep{dadarlat2024} and 1.47 (1.00--1.98) read from the
+  raw cells (section~\ref{sec:awake}). Paired net modulation is for electrodes
   485~\um{} apart at 200~Hz, in percent of the summed single responses over
   an 800~\um{} square centred between the electrodes. Kim \textit{et al.}
   report a positive net at 12.7~\uA{} \citep{kim2025}. $^\ast$The same over
@@ -702,6 +761,89 @@ single cells would have to explain it.
 \small
 \input{tables/inhibition.tex}
 \end{table*}
+
+\subsection{The model against every cell in awake cortex}
+\label{sec:awake}
+
+Every recruitment number so far comes from published summaries.
+Dadarlat \textit{et al.} also shared their raw traces, and with them the
+model can be set against each of 6,694 cells at each of nine currents
+(section~\ref{sec:rawmethods}).
+
+The calibration fails that test (figure~\ref{fig:f12}(a)). At 10~\uA,
+18.4\% of excitatory cells within 100~\um{} of the tip respond, against
+2.4\% predicted, and at 50~\uA{} 79.6\% respond against 10.7\%. The
+shortfall holds at every distance out to 500~\um, so it does not come
+from the 64~\um{} uncertainty in where the tip sits. It is mostly a matter
+of density. Refitting the two site densities alone lowers the AIC by
+33,400 and puts them at 104 and 79, against the calibrated 9 and 6. A
+local term with a reach of 88~\um{} lowers it by another 990. With it the
+model follows the profile at every current, at 9.1 and 12.8 times the
+calibrated densities. Counting only short-latency excitation gives 6.8
+and 7.7 times, with the same 90~\um{} core. The calibration came from a
+synthetic calcium dye in another laboratory's preparation, and these
+cells from awake mice with a statistical response criterion. We cannot
+say which difference accounts for the gap.
+
+These fits count every responding cell as driven directly. Imaging at
+5~Hz per plane cannot separate a cell driven at the tip from one its
+neighbours drive, and the response amplitudes are graded, with no gap that
+would split the two. In the model the question does not arise, because
+its network moves undriven cells by under half a hertz. Cortex may do
+more than the model's network, so the refitted recruitment bounds
+occupancy from above and the calibration bounds it from below.
+
+Read from the raw cells, the inhibitory to excitatory ratio near the tip
+is highest at low currents and falls toward the published value as
+current rises (figure~\ref{fig:f12}(b)). Within 300~\um{} at 20~\uA{} it
+is 1.47 (95\% interval 1.00--1.98) for any response and 1.23
+(0.80--1.72) for short-latency excitation. At 10~\uA{} it is 1.72 and
+1.94, and at 40 and 50~\uA{} from 0.89 to 1.13. The published value of
+about 1.1 is the high-current one. The range the sparse model needs for
+Kim \textit{et al.}'s sign, 1.37 to 1.65 (section~\ref{sec:twoconstraints}),
+lies inside both intervals at 20~\uA, and so does the calibration's
+1.13. The two mouse datasets do not disagree. Nor do the raw cells fix the
+ratio tightly enough to set the sign at 100~\uA.
+
+Dense recruitment also changes the comparison with Kim \textit{et al.}
+With the refitted densities the model's ratio at 20~\uA{} is 1.20, and its
+net paired modulation at 485~\um{} is $-0.50$, $-1.29$ and $-1.80$\% at
+6.8, 12.7 and 15.9~\uA. With the inhibitory densities scaled by 1.25, to
+a ratio of 1.50 that matches the data's 1.47, the net at 485~\um{} is
+$+0.39$, $+0.21$ and $-0.13$\%, and averaged over the four separations
+$+0.66$, $+0.64$ and $+0.34$\%. The network-driven cells are enhanced at
+every current and separation and the directly driven ones attenuated, as
+Kim \textit{et al.} found. The net is small and positive at the two lower
+currents and falls toward zero at the highest. That is their pattern,
+except that it is no larger at 12.7 than at 6.8~\uA. At 1.5 times (ratio
+1.79) the net at 485~\um{} is $+2.02$, $+2.44$ and $+2.11$\%, largest at
+12.7~\uA. No sparse density produced a net that falls between 12.7 and
+15.9~\uA. Dense recruitment does, for the reason Kim \textit{et al.}
+gave. The attenuation of directly driven cells grows with current while
+the network's enhancement saturates, $-0.64$, $-1.54$ and $-2.09$\%
+against $+2.67$, $+3.98$ and $+4.20$\% at 1.5 times. Their experiment was in anaesthetised
+mice and these cells in awake ones, so a match in one ratio across the
+two is not guaranteed.
+
+Dense recruitment makes interaction larger without changing its shape
+(figure~\ref{fig:f12}(d)). Between electrodes 0.4~mm apart the signed
+interaction is $-3.0$, $-10.1$ and $-23.2$\% at 50, 100 and 300~\uA,
+with peaks of 28, 46 and 50\%. At 50\% the paired response at that point
+is no larger than either electrode's alone. On the same 53.5~\um{} grid
+the calibration gives $-2.0$ and $-7.7$\% at 100 and 300~\uA, with peaks
+of 10 and 32\%. The peak is still largest at the shortest separation, the
+signed interaction is still suppressive there from 50~\uA{} up, and the
+network still facilitates at range, by $+3.6$\% at 1.6~mm and 100~\uA{}
+and $+5.7$\% at 2.4~mm and 300~\uA. These numbers also depend on the
+orientation map, because each electrode's footprint depends on the domain
+its tip lands in. Over twelve maps the signed interaction at 100~\uA{} and
+0.4~mm is $-2.9\pm0.8$\% with the calibration and $-12.5\pm2.3$\% with
+dense recruitment, and at 300~\uA{} $-9.1\pm1.6$\% and $-23.9\pm0.9$\%.
+The map used everywhere else in this paper is the least suppressive of
+the twelve for both. Between neighbouring electrodes at Utah pitch and
+100~\uA{} the interaction therefore lies between about 3 and 12\%, and
+which end holds depends on what fraction of the cells that respond in
+awake cortex the electrode drives directly.
 
 \subsection{The human multi-electrode data}
 \label{sec:human}
@@ -785,6 +927,59 @@ repulsion at the separations where it was measured.
 \setlength{\tabcolsep}{2.6pt}
 \input{tables/human.tex}
 \end{table}
+
+\subsection{Thresholds for groups of electrodes in a blind volunteer}
+\label{sec:fernandez}
+
+One human measurement does fall in the model's range. Fern\'andez
+\textit{et al.} implanted a 96-electrode Utah array at 400~\um{} pitch in
+the occipital cortex of a blind volunteer. They measured the current per
+electrode needed for a phosphene when 1, 2, 4, 9 or 16 contiguous
+electrodes were driven together \citep{fernandez2021}. It fell from
+73.5~\uA{} for one electrode to 70.8, 47.7, 42.3 and 28.1~\uA{} for the
+groups (their supplementary figure~1, digitised). Pairs changed it little,
+as the authors note. The electrodes were intracortical, the currents were
+within a factor of two of the model's calibration, and the model was not
+fitted to these numbers.
+
+A threshold needs a readout. We took the largest value of the recruited
+excitatory population after Gaussian smoothing of width $\sigma$, from no
+smoothing up to the total over the sheet. For each group we found the
+current per electrode at which that readout reaches its value for one
+electrode at 73.5~\uA, averaged over four placements on the orientation
+map (figure~\ref{fig:f12}(c)). Recruitment alone is used, since the
+network moves undriven cells by under half a hertz. The legend does not
+say what the bars are. We used them as the error of each ratio. That is
+the usual test if they are errors of the mean, and a lenient one if they
+are spreads across groups.
+
+Total activity fails with every recruitment ($\chi^2$ of 22 to 32 on four
+ratios at the measured current). Doubling the electrodes doubles the
+total, so a pair would need 0.55 to 0.63 of the single current, against
+0.96 measured. Smoothing wider than 200~\um{} fails too ($\chi^2\ge13$).
+A local readout fits. With sparse recruitment and $\sigma=100$~\um{} $\chi^2$ is
+3.2, and occupancy hardly matters, because at 400~\um{} sparse activations
+barely overlap ($\chi^2=3.8$ with activations added). Dense recruitment
+fitted to the awake cells (section~\ref{sec:awake}) separates the two.
+With occupancy it fits at $\sigma=100$~\um{} ($\chi^2=3.5$, and 3.2 with
+recruitment fitted to short-latency responses alone). With activations
+added where they overlap no readout fits ($\chi^2\ge15.3$, $p<0.005$),
+because the summed overlap lets a pair match one electrode at about half
+the current. Short-latency recruitment, the sparser of the two dense fits,
+rejects addition only marginally ($\chi^2\ge8.6$, $p=0.07$). If human recruitment is as dense as recruitment in awake
+mouse, the human thresholds require that a cell reached by several
+electrodes counts once.
+
+Two cautions limit that conclusion. The rejection holds at the measured
+current and at 150~\uA, but not if the model's 35~\uA{} stands for the
+human 73.5~\uA{} ($\chi^2=2.7$ with activations added), and how mouse
+currents map onto a human electrode at 1.5~mm depth is not known. A
+perceptual account also fits. Probability summation over independent
+electrodes, with a Weibull slope of 3.3, gives $\chi^2=2.0$. The curve
+rules out additive overlap under dense recruitment at the measured current,
+but it cannot tell occupancy in cortex from summation in perception.
+Section~\ref{sec:experiments} gives a measurement on the same array that
+can.
 
 \subsection{Arrays have no ceiling}
 \label{sec:arrays}
@@ -1016,14 +1211,36 @@ is the measurement we would ask for first. At 100~\uA{} and 400~\um{} it
 alone moves the predicted interaction from $-7.6$\% to $+9.8$\%
 (table~\ref{tab:t4}), because an inhibitory cell reached by two electrodes
 inhibits once instead of twice. It has been measured once, as a ratio of
-responding cells in awake mouse V1 \citep{dadarlat2024}. Read through this
-model, Kim \textit{et al.}'s paired data put the ratio at 1.37 or above,
-and the sign at 100~\uA{} turns at 1.65 (section~\ref{sec:twoconstraints}).
-A direct measurement able to tell 1.1 from 1.65 would settle it.
+responding cells in awake mouse V1 \citep{dadarlat2024}. Read from the raw
+cells it is 1.47 at 20~\uA, with an interval from 1.00 to 1.98
+(section~\ref{sec:awake}). In the calibrated model the sign at 100~\uA{}
+turns at 1.65, inside that interval. A measurement with a quarter of its
+width would settle the sign.
 Two-photon imaging
 of interneuron-labelled lines during single and paired stimulation, at the
 currents and pitches devices use, would fix it, and doing so in primate
 cortex would fix it for the case that matters.
+
+\textbf{What fraction of the cells that respond in awake cortex does an
+electrode drive directly?} This sets the size of the interaction between
+neighbouring electrodes. Counting every responder as driven puts it at
+$-12.5$\% at 100~\uA{} and 0.4~mm, and the calibration at $-2.9$\%
+(section~\ref{sec:awake}). Imaging fast enough to resolve the first few
+milliseconds after a pulse, or with synaptic transmission blocked near the
+tip, would fix the fraction in the preparation where the responses were
+counted.
+
+\textbf{Thresholds for spaced groups on an implanted array.} Repeat
+Fern\'andez \textit{et al.}'s group thresholds on every second or third
+electrode of the array, 0.8 or 1.2~mm apart. Probability summation over
+independent electrodes predicts the same fall in threshold at every
+spacing, to 0.81, 0.66, 0.51 and 0.43 of the single current for 2, 4, 9
+and 16 electrodes. Occupancy needs overlap. With dense recruitment the
+model predicts 0.86 at 0.8~mm and 0.94 at 1.2~mm for sixteen electrodes,
+and with sparse recruitment 0.81 and 0.95. Four electrodes 1.2~mm apart
+already separate the two accounts, at 0.96 to 0.97 of the single
+current against 0.66. This needs no new hardware, only electrodes already implanted, and
+it tells cortex from perception (section~\ref{sec:fernandez}).
 
 \textbf{Shape of interaction against separation.} Measuring phosphene
 brightness at four or five separations from 0.4 to 3~mm at a fixed
@@ -1093,6 +1310,14 @@ brightness would not, and driving harder would not bring it back
 programming against independence needs a small correction or runs into a
 hard limit, and the experiments above can settle it.
 
+Dense recruitment enlarges the correction without changing its form. If
+every cell that responds in awake cortex is driven directly, an encoder
+that assumes independence overestimates the summed output of two
+neighbouring Utah electrodes by an eighth at 100~\uA{} and by nearly a
+quarter at 300~\uA{} (section~\ref{sec:awake}). Driving electrodes at
+the same moment only when they are 1.2~mm or more apart keeps the signed
+error under 4\% at 100~\uA{} in both models.
+
 The modelling corollary does not depend on which hypothesis is right. Any
 forward model meant to capture electrode interaction needs a nonlinearity
 that acts \emph{after} the electrodes combine. A compressive function of
@@ -1106,18 +1331,26 @@ range.
 \subsection{Limitations}
 
 \begin{itemize}[leftmargin=1.1em,itemsep=0.2em,topsep=0.2em]
+\item \textbf{Recruitment is bracketed, not fixed.} The calibration
+  predicts a tenth of the responses seen in awake cortex. The refit to
+  those cells counts every responder as driven directly, which overstates
+  occupancy. The truth lies between, and so does the interaction between
+  neighbouring electrodes (section~\ref{sec:awake}).
 \item \textbf{The sign at moderate currents is not determined.} It depends
-  on the direct recruitment of inhibitory cells, calibrated here to one
-  mouse measurement. Table~\ref{tab:t4} gives the range, and Kim
+  on the direct recruitment of inhibitory cells. Read from the raw cells,
+  the ratio that sets it lies between 1.00 and 1.98 at 20~\uA, wide
+  enough for either sign. Table~\ref{tab:t4} gives the range, and Kim
   \textit{et al.}'s paired data bound it from one side
   (table~\ref{tab:inh}).
-\item \textbf{The model misses one comparison.} At the calibrated density
-  it predicts small suppression where Kim \textit{et al.} report net
-  enhancement at 12.7~\uA, and it does not enhance the cells that respond
-  to neither electrode. More inhibitory recruitment fixes both, but at no
-  density does the enhancement vanish again at 15.9~\uA. It also
-  underestimates how far recruited somata spread as current rises
-  (table~\ref{tab:t3}).
+\item \textbf{The model misses part of one comparison.} With sparse
+  recruitment it predicts small suppression where Kim \textit{et al.}
+  report net enhancement at 12.7~\uA, and more inhibitory recruitment fixes
+  the sign but never the return to zero at 15.9~\uA. With recruitment
+  refitted to awake cells and the I/E ratio the raw cells give, the net is
+  small and positive and returns to zero at 15.9~\uA, but it is no larger
+  at 12.7 than at 6.8~\uA, and their mice were anaesthetised. The sparse
+  model also underestimates how far recruited somata spread as current
+  rises (table~\ref{tab:t3}).
 \item \textbf{Its parameters come from cat, macaque and mouse.} Network
   lengths are from a cat- and macaque-scale model, and recruitment from
   mouse and cat imaging. A variant with every lateral length scaled to
@@ -1139,7 +1372,11 @@ range.
   below it at higher currents. How a subject's reports map onto cortical
   rate is not known, and the two size estimates in
   section~\ref{sec:validation} bracket the baseline.
-\item \textbf{The human interaction data comes from sighted volunteers and
+\item \textbf{The intracortical human data cannot separate cortex from
+  perception.} Thresholds for groups of Utah electrodes fit occupancy and
+  probability summation equally, they are digitised from a figure, and its
+  legend does not say what the bars are (section~\ref{sec:fernandez}).
+\item \textbf{The human pair data comes from sighted volunteers and
   surface electrodes.} Bosking \textit{et al.} studied epilepsy patients
   with subdural contacts (0.5~mm diameter, 2--6~mm spacing) at currents
   far above those the model's recruitment was calibrated at. Devices go
@@ -1173,17 +1410,25 @@ Interaction takes a nonlinearity acting on the combined input.
 
 Cortex built from measured parts supplies one. Two electrodes interact
 mainly because they reach some of the same cells, and a cell can only be
-recruited once. The effect is a few percent at the currents devices use
-and reaches tens of percent at 300~\uA{} and 400~\um. It is largest at the
+recruited once. Raw cells from awake cortex show an electrode reaching
+about ten times more cells than the calibration assumed, if every cell
+that responds is driven directly. Between neighbouring electrodes at
+100~\uA{} the interaction therefore lies between 3 and 12\% of the
+summed response, and at 300~\uA{} and 400~\um{} it reaches tens of
+percent. It is largest at the
 shortest separation and falls to a tenth of that by about 2.5~mm. The more
 dramatic consequences of a pooled divisor, a sign that reverses with
 drive, a sequential penalty and a ceiling on what an array can deliver,
 do not appear, and neither model reaches the separations at which the
 human size changes were measured. Whether the interaction at moderate
 currents is suppressive or facilitatory turns on how many inhibitory
-cells an electrode drives directly. Paired-electrode imaging in mouse
-suggests it is higher than the one direct measurement. That is the number
-we would most like to see measured.
+cells an electrode drives directly. Read from the raw cells, that number
+sits where the paired-electrode data in mouse need it, but not tightly
+enough to fix the sign. Two measurements would now settle most of what is
+open. One is the fraction of the cells responding in awake cortex that an
+electrode drives directly. The other is the threshold for spaced groups of
+electrodes on an array already implanted in a person, which tells
+occupancy in cortex from summation in perception.
 
 \section*{Data availability}
 
@@ -1193,7 +1438,10 @@ table and number in this manuscript are available at
 \texttt{prosthesis/run\_all.py} regenerates all results,
 \texttt{paper/make\_figures.py} all figures and \texttt{paper/v2\_tables.py}
 all tables, and \texttt{paper/verify\_claims.py} checks every quantitative
-claim above against freshly regenerated output.
+claim above against freshly regenerated output. The raw awake cells are
+Dadarlat \textit{et al.}'s, shared under CC~BY~4.0
+(\href{https://doi.org/10.17632/tzwps2dykh.2}{doi:10.17632/tzwps2dykh.2}),
+and \texttt{prosthesis/dadarlat.py} downloads and reads them.
 
 \bibliographystyle{unsrtnat}
 \bibliography{manuscript_v2}
@@ -1244,7 +1492,8 @@ one two-photon optical section against current. The square is the single
 calibration point \citep{histed2009}. (b) Median lateral distance of
 recruited somata from the tip, for excitatory (red) and inhibitory (blue)
 cells. Recruitment fills in with current instead of spreading, and
-inhibitory cells are recruited nearer the tip \citep{dadarlat2024}.
+inhibitory cells are recruited nearer the tip, which the raw cells of
+\citet{dadarlat2024} do not show.
 Diamonds are the three-dimensional medians of \citet{kumaravelu2022},
 which grow faster than the model's. (c) Response at the electrode's own
 site to a grating and stimulation together, as a fraction of the two
@@ -1394,6 +1643,34 @@ crosses from facilitation to suppression. (c) The current at which the
 sign flips, against separation. It falls for the pooled divisor and rises
 for pointwise saturation, whose interaction lives only in the overlap.}
 \label{fig:f11}
+\end{figure}
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=\textwidth]{figures/fig12.png}
+\caption{\textbf{The model against raw cells from awake cortex and against
+human thresholds.} (a) Excitatory cells responding to one electrode in
+awake mouse V1 \citep{dadarlat2023data}, against distance from the tip, at
+10, 20 and 50~\uA{} (points, with binomial 95\% intervals). The calibrated
+recruitment (blue, dashed) predicts a tenth of the responses at every
+distance. Recruitment refitted to these cells, with a local core of
+88~\um{} (green), follows them. (b) Inhibitory to excitatory ratio of
+expected sites within 300~\um, read from the raw cells with saturation
+undone, for any response (filled) and short-latency excitation (open),
+with hierarchical-bootstrap 95\% intervals. The band is the range the
+sparse model needs for the sign of Kim \textit{et al.}'s net modulation,
+and the dashed line the calibration. (c) Per-electrode threshold for groups
+of contiguous Utah electrodes at 400~\um{} pitch in a blind volunteer
+\citep{fernandez2021}, relative to one electrode, against the model with a
+local readout ($\sigma=100$~\um) and the single threshold at 73.5~\uA.
+Sparse and dense recruitment with occupancy both fit. Dense recruitment
+with activations added where they overlap does not. Probability summation
+over independent electrodes (grey) fits as well. The pale line is the
+model's prediction for the same groups on every third electrode, 1.2~mm
+apart, where probability summation predicts the grey curve again. (d) Signed interaction
+against separation with calibrated (dashed) and dense (solid) recruitment,
+at 100 and 300~\uA{} on a 53.5~\um{} grid.}
+\label{fig:f12}
 \end{figure}
 
 \end{document}

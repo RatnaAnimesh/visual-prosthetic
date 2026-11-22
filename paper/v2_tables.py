@@ -138,6 +138,7 @@ def validation() -> str:
     ong = {r["amp_ua"]: r for r in v["ongoing"]}
     du = {(r["separation_um"], r["amp_ua"]): r for r in v["dual"]}
     size = {r["amp_ua"]: r for r in load("v2_paper_size.json")["rows"]}
+    fm = load("v2_awake_cells.json")["field_medians"]
 
     def pct(x):
         return _minus(f"{100 * x:+.2f}\\%")
@@ -161,10 +162,10 @@ def validation() -> str:
         ("Recruited I/E ratio within 300~\\um", "about 1.1",
          f"{inh[50.0]['ratio_within_300um']:.2f}", "yes",
          "\\citet{dadarlat2024}"),
-        ("Median distance, I vs E at 50~\\uA{} (\\um)", "I closer",
-         f"{inh[50.0]['median_distance_i_um']:.0f} vs "
-         f"{inh[50.0]['median_distance_e_um']:.0f}", "no",
-         "\\citet{dadarlat2024}"),
+        ("Imaged median, I vs E at 50~\\uA{} (\\um)",
+         f"{fm['data_i50']:.0f} vs {fm['data_e50']:.0f}",
+         f"{fm['calibration_i50']:.0f} vs {fm['calibration_e50']:.0f}", "no",
+         "\\citet{dadarlat2023data}"),
         ("Ongoing firing near the tip at 100~\\uA", "suppressed",
          _minus(f"down by {-100 * ong[100.0]['deepest_suppression_frac']:.0f}\\%"),
          "no", "\\citet{butovas2003}"),
