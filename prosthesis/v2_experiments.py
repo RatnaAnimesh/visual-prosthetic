@@ -197,8 +197,12 @@ def channels(m, counts=(1, 4, 9, 16, 25, 36, 64, 100),
 
 
 def charge_to_hold(m, base=300.0, counts=(4, 16, 64),
-                   pitches=(400.0, 800.0)):
+                   pitches=(400.0, 800.0), max_ua=20000.0):
     """Amplitude each of N electrodes needs to deliver one electrode's output.
+
+    Where even max_ua falls short the row has amp_ua None and the fraction of
+    the target reached at max_ua.  At 20 mA the initiation radius, 2.3 mm, stays
+    inside the grid's 3.2 mm margin, so the search never reads the grid edge.
 
     The phenomenological model's ceiling made this explode (46 mA at N = 64).
     Delta k = 2 log10(I_N / I_1) is the rise in Shannon's k, independent of
@@ -222,6 +226,11 @@ def charge_to_hold(m, base=300.0, counts=(4, 16, 64),
             lo, hi = base, base
             if per_channel(base) >= target:
                 amp = base
+            elif (top := per_channel(max_ua)) < target:
+                out.append({"pitch_um": pitch, "n": n, "base_ua": base,
+                            "amp_ua": None, "delta_k": None,
+                            "fraction_at_max": top / target})
+                continue
             else:
                 while per_channel(hi) < target:
                     lo, hi = hi, hi * 2.0

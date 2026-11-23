@@ -1,0 +1,6 @@
+dense: awake_all sweep, channels and charge done
+wrote results/v2_awake_dense.json
+dense: awake_fast sweep, channels and charge done
+wrote results/v2_awake_dense.json
+wrote results/v2_awake_dense.json
+exit 0

@@ -204,3 +204,23 @@ def test_crossing_finds_the_first_turn_to_positive():
     assert crossing([1.0, 2.0, 3.0], [-1.0, 1.0, 3.0]) == pytest.approx(1.5)
     assert crossing([1.0, 2.0, 3.0], [1.0, -1.0, 3.0]) == pytest.approx(2.25)
     assert crossing([1.0, 2.0], [-1.0, -0.5]) is None
+
+
+def test_charge_to_hold_reports_a_ceiling_when_no_current_reaches_the_target():
+    from prosthesis.v2_experiments import charge_to_hold
+
+    class Saturating:
+        """Each electrode's output caps at `cap` and is shared among the driven ones."""
+        def __init__(self, cap):
+            self.cap = cap
+
+        def _ensure_cortical_grid(self, xe, ye):
+            return None
+
+        def _activation_field(self, a, xe, ye, g):
+            return np.minimum(a, self.cap) / np.count_nonzero(a)
+
+    hit, = charge_to_hold(Saturating(1e9), counts=(4,), pitches=(400.0,))
+    assert hit["amp_ua"] == pytest.approx(1200.0, rel=1e-3)
+    miss, = charge_to_hold(Saturating(1000.0), counts=(4,), pitches=(400.0,))
+    assert miss["amp_ua"] is None and miss["fraction_at_max"] == pytest.approx(250 / 300)

@@ -49,6 +49,18 @@ def _span(vals):
     return f"{lo} to {hi}\\%"
 
 
+def _slope(pairs):
+    """Which way a crossover current moves with separation, over where it exists."""
+    if not pairs:
+        return "none"
+    (s0, c0), (s1, c1) = min(pairs), max(pairs)
+    return f"{'rises' if c1 > c0 else 'falls'}, {s0 / 1000:g} to {s1 / 1000:g}~mm"
+
+
+def _dk(dk, cap_ma):
+    return f"$+${dk:.2f}" if dk is not None else f"none to {cap_ma:g}~mA"
+
+
 def _pct(v, digits=1):
     """Percent, with values that are zero to machine precision shown as 0."""
     return "0" if abs(v) < 1e-6 else f"{100 * v:.{digits}f}"
@@ -246,6 +258,7 @@ def comparison() -> str:
     pk = max(full, key=lambda r: r["max_dev"])
     cross = [r["crossover_ua"] for r in surf if r["crossover_ua"]]
     dk = {r["n"]: r.get("delta_k") for r in ph8["shannon"]["by_pitch"]["800.0"]}
+    dk4 = {r["n"]: r.get("delta_k") for r in ph8["shannon"]["by_pitch"]["400.0"]}
     seqs = [x["second_over_solo"] for res in e["sequence"].values()
             for r in res for x in r["rows"]]
     prep = [r["repulsion"] for r in rp["pooled_divisor"]]
@@ -256,50 +269,80 @@ def comparison() -> str:
            if r["peak_shift"] is not None]
     b411 = [r["max_dev"] for r in bk["rows"] if r["separation_um"] == 4110.0]
     tenth = bk["range_to_tenth_um"]
+    dn = load("v2_awake_dense.json")["awake_all"]
+    DP = {(r["amp_ua"], r["separation_um"]): r for r in dn["pairs"]}
+    DC = {(r["amp_ua"], r["pitch_um"], r["n"]): r for r in dn["channels"]}
+    dch = {(r["pitch_um"], r["n"]): r for r in dn["charge"]}
+    dcross = [v for v in dn["crossover_ua"].values() if v]
+    dseq = [x["second_over_solo"] for r in dn["sequence"] for x in r["rows"]]
+    dpk = dn["signature"]
 
+    nr = "not run"
     rows = [
-        ("Linear mechanisms add nothing", "exact", "exact"),
+        ("Linear mechanisms add nothing", "exact", "exact", "exact"),
         ("Peak departure, 300~\\uA, 0.4~mm",
          f"{_pct(full[0]['max_dev'])}\\%",
          f"{_pct(P[(300.0, 400.0)]['max_dev'])}\\% "
-         f"({min(peaks):.1f}--{max(peaks):.1f}\\%)"),
+         f"({min(peaks):.1f}--{max(peaks):.1f}\\%)",
+         f"{_pct(DP[(300.0, 400.0)]['max_dev'])}\\%"),
         ("Where that departure peaks",
          f"{pk['separation_um'] / 1000:.1f}~mm (interior)",
-         "shortest separation, all 19 variants"),
+         "shortest separation, all 19 variants",
+         "shortest separation" if dpk["peak_at_um"] == 400.0
+         else f"{dpk['peak_at_um'] / 1000:.1f}~mm"),
         ("Sign reverses with current",
          f"at {min(cross):.0f}--{max(cross):.0f}~\\uA",
-         "no, to 600~\\uA{} at $\\le$0.8~mm"),
+         "no, to 600~\\uA{} at $\\le$0.8~mm",
+         (f"at {min(dcross):.0f}--{max(dcross):.0f}~\\uA" if dcross else "no")),
+        ("Crossover current against separation",
+         _slope([(r["separation_um"], r["crossover_ua"]) for r in surf
+                 if r["crossover_ua"]]),
+         _slope([(float(k), v) for k, v in e["crossover_ua"].items() if v]),
+         _slope([(float(k), v) for k, v in dn["crossover_ua"].items() if v])),
         ("Decay to a tenth, 0.3--4~mA",
          f"{p5['300.0']['decay10_um'] / 1000:.1f}--"
          f"{p5['4000.0']['decay10_um'] / 1000:.1f}~mm",
-         f"{tenth['300.0'] / 1000:.1f}--{tenth['4000.0'] / 1000:.1f}~mm"),
+         f"{tenth['300.0'] / 1000:.1f}--{tenth['4000.0'] / 1000:.1f}~mm", nr),
         ("Peak departure at 4.11~mm, up to 4~mA",
          f"up to {100 * float(np.interp(4110, np.array(load('phase5_scale.json')['separations_um'], float), np.array(p5['4000.0']['deviations']))):.0f}\\%",
-         f"at most {100 * max(b411):.1f}\\%"),
+         f"at most {100 * max(b411):.1f}\\%", nr),
         ("Centroids, change in distance, 0.1--0.6~mA",
-         _span(prep), _span(brep)),
+         _span(prep), _span(brep), nr),
         ("Maxima, change in distance, 0.1--0.6~mA",
-         _span(ppk), _span(bpk)),
+         _span(ppk), _span(bpk), nr),
         ("Five electrodes, percept change",
          f"{100 * pc['pooled_divisor']['percept_change']:.0f}\\%",
-         f"{100 * pc['percept_change']:.0f}\\%"),
+         f"{100 * pc['percept_change']:.0f}\\%", nr),
         ("Brightness, programmed as independent",
          f"{100 * ph4['mean_contrast_ratio']:.0f}\\% of target",
-         f"{100 * enc['contrast_ratio_mismatched']:.0f}\\% of target"),
+         f"{100 * enc['contrast_ratio_mismatched']:.0f}\\% of target", nr),
         ("Later phosphene, brightness against alone",
          f"dimmer by up to {ph9['max_predicted_dimming_pct']:.0f}\\%",
-         f"within {100 * max(abs(1 - x) for x in seqs):.1f}\\%"),
+         f"within {100 * max(abs(1 - x) for x in seqs):.1f}\\%",
+         # dense recruitment saturates the tip the readout sits on
+         "unchanged, tip saturated" if max(abs(1 - x) for x in dseq) < 1e-3
+         else f"within {100 * max(abs(1 - x) for x in dseq):.1f}\\%"),
         ("100 electrodes, 0.4~mm, 300~\\uA",
          f"{ph8['ceilings']['circuit']['400.0']['relative_total'][-1]:.1f}"
          "$\\times$ one",
-         f"{C[(300.0, 400.0, 100)]['relative_to_one']:.0f}$\\times$ one"),
+         f"{C[(300.0, 400.0, 100)]['relative_to_one']:.0f}$\\times$ one",
+         f"{DC[(300.0, 400.0, 100)]['relative_to_one']:.0f}$\\times$ one"),
+        ("$\\Delta k$ to hold brightness, $N=16$, 0.4~mm",
+         _dk(dk4[16], 200), _dk(ch[(400.0, 16)]["delta_k"], 20),
+         _dk(dch[(400.0, 16)]["delta_k"], 20)),
+        ("$\\Delta k$ to hold brightness, $N=64$, 0.4~mm",
+         _dk(dk4[64], 200), _dk(ch[(400.0, 64)]["delta_k"], 20),
+         _dk(dch[(400.0, 64)]["delta_k"], 20)),
         ("$\\Delta k$ to hold brightness, $N=64$, 0.8~mm",
          f"$+${dk[64]:.1f}",
-         f"$+${ch[(800.0, 64)]['delta_k']:.2f}"),
+         f"$+${ch[(800.0, 64)]['delta_k']:.2f}",
+         f"$+${dch[(800.0, 64)]['delta_k']:.2f}"),
     ]
-    body = "\n".join(f"{a} & {b} & {c} \\\\" for a, b, c in rows)
-    return ("\\begin{tabular}{lll}\n\\toprule\n"
-            "prediction & pooled divisor & measured parts \\\\\n\\midrule\n"
+    body = "\n".join(" & ".join(r) + " \\\\" for r in rows)
+    return ("\\begin{tabular}{llll}\n\\toprule\n"
+            " & & \\multicolumn{2}{c}{measured parts} \\\\\n"
+            "\\cmidrule(lr){3-4}\n"
+            "prediction & pooled divisor & calibrated & dense \\\\\n\\midrule\n"
             + body + "\n\\bottomrule\n\\end{tabular}\n")
 
 

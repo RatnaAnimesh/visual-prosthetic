@@ -23,6 +23,10 @@ curve, Fernandez et al.'s thresholds for groups of contiguous electrodes.
                sparse and awake recruitment
     spaced     the human groups on every second or third electrode, where
                occupancy and probability summation part
+    dense      the paper's discriminating predictions rerun with awake
+               recruitment on the paper's own grid and map: the current
+               sweep and where the sign turns, array output, the charge to
+               hold it, and sequential phosphenes
     kim        Kim et al.'s paired net modulation (2025) with awake recruitment,
                scaling the inhibitory densities, and the I/E ratio each scale
                gives near the tip at 20 uA, read as the data are read
@@ -47,6 +51,7 @@ sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent.parent))
 from prosthesis import dadarlat as D
 from prosthesis.cortex_ssn import BiophysicalCortex, RecruitmentParams
 from prosthesis.v2_experiments import interaction, pair
+from prosthesis import v2_experiments as E
 from prosthesis.v2_validate import dual_electrode
 
 RESULTS = pathlib.Path("results")
@@ -411,8 +416,31 @@ def kim_part(step: float = 53.5, mults=KIM_MULTS):
                   "by_mult": out})
 
 
+def dense_part():
+    """Same calls and grid as v2_experiments.py, with recruitment fitted to awake cells.
+
+    Both fits bracket the directly driven fraction: awake_all counts every
+    responder as driven, awake_fast only the short-latency ones.
+    """
+    out = {}
+    for name in ("awake_all", "awake_fast"):
+        m = BiophysicalCortex(recruit=variants()[name])
+        rows = E.pair_sweep(m)
+        out[name] = {"pairs": rows, "crossover_ua": E.crossovers(rows),
+                     "interaction_range_um": E.interaction_range(rows),
+                     "signature": E.signatures(rows),
+                     "channels": E.channels(m), "charge": E.charge_to_hold(m)}
+        print(f"dense: {name} sweep, channels and charge done", flush=True)
+        _save("dense", out)
+    m = BiophysicalCortex(recruit=variants()["awake_all"])
+    out["awake_all"]["sequence"] = [E.sequence(m, sep, amp) for sep in (800.0, 1600.0)
+                                    for amp in (100.0, 300.0)]
+    _save("dense", out)
+
+
 PARTS = {"cells": cells_part, "human": human_part, "pairs": pairs_part,
-         "maps": maps_part, "kim": kim_part, "spaced": spaced_part}
+         "maps": maps_part, "kim": kim_part, "spaced": spaced_part,
+         "dense": dense_part}
 
 if __name__ == "__main__":
     parts = sys.argv[1:] or list(PARTS)

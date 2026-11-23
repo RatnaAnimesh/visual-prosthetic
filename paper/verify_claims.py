@@ -949,6 +949,8 @@ def awake():
                           ("awake_all_300_signed_total", -23.9, 0.9)):
         pct1(f"3.6 twelve maps, {key} mean", sm[key]["mean"], mean)
         pct1(f"3.6 twelve maps, {key} sd", sm[key]["sd"], sd)
+    check("1 the cells move interaction by a factor of about four",
+          sm["awake_all_100_signed_total"]["mean"] / sm["sparse_100_signed_total"]["mean"], 4, 0.5, "x")
     pct1("3.3 twelve maps, sparse 100 uA lowest", sm["sparse_100_signed_total"]["min"], -4.5)
     pct1("3.3 twelve maps, sparse 100 uA highest", sm["sparse_100_signed_total"]["max"], -2.0)
     pct0("abstract twelve maps, sparse peak at 300 uA", sm["sparse_300_max_dev"]["mean"], 33)
@@ -973,6 +975,82 @@ def awake():
     check("4.2 sparse, 4 at 1.2 mm", spaced("sparse", 1200.0, "4"), 0.97, 0.005)
 
 
+def dense():
+    """The paper's own sweeps rerun with recruitment refitted to awake cells."""
+    d = load("v2_awake_dense.json")
+    A, F = d["awake_all"], d["awake_fast"]
+    cal = load("v2_experiments.json")
+
+    def x(v, sep):
+        return v["crossover_ua"][str(float(sep))]
+
+    check("3.6 dense crossover, 0.8 mm, every responder", x(A, 800), 55, 0.5, "uA")
+    true("3.6 no crossover at 0.8 mm, short-latency", x(F, 800) is None)
+    check("3.6 dense crossover, 1.2 mm, every responder", x(A, 1200), 230, 0.5, "uA")
+    check("3.6 dense crossover, 1.2 mm, short-latency", x(F, 1200), 273, 0.5, "uA")
+    check("3.6 dense crossover, 1.6 mm, every responder", x(A, 1600), 460, 0.5, "uA")
+    check("3.6 dense crossover, 1.6 mm, short-latency", x(F, 1600), 537, 0.5, "uA")
+    true("3.6 the lower crossover in each pair is every responder's",
+         all(x(A, s_) < x(F, s_) for s_ in (1200, 1600)))
+    true("3.3/3.6 crossovers only from 0.8 to 1.6 mm, rising with separation",
+         all([k for k, c in v["crossover_ua"].items() if c] in
+             (["800.0", "1200.0", "1600.0"], ["1200.0", "1600.0"])
+             and sorted(c for c in v["crossover_ua"].values() if c)
+             == [c for c in v["crossover_ua"].values() if c] for v in (A, F)))
+    true("3.6 suppressive at 0.4 and 0.6 mm at every current, both fits",
+         all(r["signed_total"] < 0 for v in (A, F) for r in v["pairs"]
+             if r["separation_um"] in (400.0, 600.0)))
+    true("3.5 calibration has no crossover", not any(cal["crossover_ua"].values()))
+    true("3.6 dense peak at the shortest separation, falling monotonically",
+         all(v["signature"]["peak_at_um"] == 400.0 and v["signature"]["monotonic_decay"]
+             for v in (A, F)))
+    for amp, lo, hi in (("100.0", 2.2, 2.3), ("300.0", 3.2, 3.3), ("600.0", 3.6, 3.7)):
+        r = sorted(v["interaction_range_um"][amp] / 1000 for v in (A, F))
+        check(f"3.6 dense tenth at {amp} uA, low", r[0], lo, 0.05, "mm")
+        check(f"3.6 dense tenth at {amp} uA, high", r[1], hi, 0.05, "mm")
+
+    def ch(v, amp, pitch, n):
+        return next(r for r in v["channels"] if r["amp_ua"] == amp
+                    and r["pitch_um"] == pitch and r["n"] == n)
+
+    check("3.8 dense ratio, N=100, 0.4 mm, 300 uA, every responder",
+          ch(A, 300.0, 400.0, 100)["efficiency"], 0.16, 0.005)
+    check("3.8 dense ratio, N=100, 0.4 mm, 300 uA, short-latency",
+          ch(F, 300.0, 400.0, 100)["efficiency"], 0.18, 0.005)
+    check("abstract 3.8 dense, times one, every responder",
+          ch(A, 300.0, 400.0, 100)["relative_to_one"], 16, 0.5, "x")
+    check("abstract 3.8 dense, times one, short-latency",
+          ch(F, 300.0, 400.0, 100)["relative_to_one"], 18, 0.5, "x")
+    true("abstract 3.8 dense output still grows with N",
+         all(np.all(np.diff([r["relative_to_one"] for r in v["channels"]
+                             if r["amp_ua"] == a and r["pitch_um"] == p]) > 0)
+             for v in (A, F) for a in (100.0, 300.0) for p in (400.0, 800.0, 1600.0)))
+    true("3.8 at 1.6 mm pitch the ratio stays above one, every recruitment",
+         all(r["efficiency"] >= 1.0 for v in (A, F, cal) for r in v["channels"]
+             if r["pitch_um"] == 1600.0 and r["amp_ua"] in (100.0, 300.0)))
+    pct0("5.1 dense, within 12% of one at 0.8 mm and 100 uA, either recruitment",
+         1 - min(r["efficiency"] for v in (A, F, cal) for r in v["channels"]
+                 if r["pitch_um"] == 800.0 and r["amp_ua"] == 100.0), 12)
+
+    def q(v, pitch, n):
+        return next(r for r in v["charge"] if r["pitch_um"] == pitch and r["n"] == n)
+
+    for v, lab, a16, k16, a816, a864 in ((F, "short-latency", 4.5, 2.4, 1.5, 6.4),
+                                         (A, "every responder", 5.5, 2.5, 2.1, 8.7)):
+        check(f"3.8 dense mA, N=16, 0.4 mm, {lab}", q(v, 400.0, 16)["amp_ua"] / 1000, a16, 0.05, "mA")
+        check(f"3.8 dense delta k, N=16, 0.4 mm, {lab}", q(v, 400.0, 16)["delta_k"], k16, 0.05)
+        check(f"3.8 dense mA, N=16, 0.8 mm, {lab}", q(v, 800.0, 16)["amp_ua"] / 1000, a816, 0.05, "mA")
+        check(f"3.8 dense mA, N=64, 0.8 mm, {lab}", q(v, 800.0, 64)["amp_ua"] / 1000, a864, 0.05, "mA")
+    check("3.8 dense mA, N=64, 0.4 mm, short-latency", q(F, 400.0, 64)["amp_ua"] / 1000, 16, 0.5, "mA")
+    check("3.8 dense delta k, N=64, 0.4 mm, short-latency", q(F, 400.0, 64)["delta_k"], 3.5, 0.05)
+    true("3.8 every responder, N=64, 0.4 mm, not reached by 20 mA", q(A, 400.0, 64)["amp_ua"] is None)
+    pct0("3.8 every responder, N=64, 0.4 mm, share of target at 20 mA",
+         q(A, 400.0, 64)["fraction_at_max"], 92)
+    check("fig9 the triangle's lower bound", 2 * np.log10(20000.0 / 300.0), 3.6, 0.05)
+    true("3.9 dense second phosphene within 0.01% at every delay",
+         max(abs(1 - x_["second_over_solo"]) for r in A["sequence"] for x_ in r["rows"]) <= 1e-4)
+
+
 def tables_current():
     """The tables the manuscript inputs are what v2_tables.py writes now."""
     sys.path.insert(0, str(ROOT / "paper"))
@@ -985,7 +1063,7 @@ def tables_current():
 
 SECTIONS = (structure, methods_constants, validation, magnitude, human,
             arrays, sequence, pooled_gain, percepts, encoder, power,
-            inhibition_sweep, awake, tables_current)
+            inhibition_sweep, awake, dense, tables_current)
 
 
 def main() -> int:

@@ -61,6 +61,7 @@ plt.rcParams.update({
 C_BIO = "#1d4f91"                      # the model built from measured parts
 C_OCC, C_NET = "#7b539b", "#1b7f79"    # its occupancy and network parts
 C_POOL = "#e08214"                     # the pooled-divisor alternative
+C_AWAKE = "#1b7837"                    # recruitment refitted to awake cells
 C_LIN, C_HORIZ = "#7a7a7a", "#1b7f79"  # linear spread, horizontal connections
 C_E, C_I = "#b2182b", "#2166ac"        # excitatory / inhibitory cells
 
@@ -601,9 +602,10 @@ def fig8():
 
 
 def fig9():
-    """Arrays: no ceiling, and a modest charge bill."""
+    """Arrays: what N electrodes deliver, and the charge to hold it."""
     e = load("v2_experiments.json")
     d = load("phase8_channels.json")
+    dn = load("v2_awake_dense.json")["awake_all"]
     fig, axes = plt.subplots(1, 2, figsize=(TWO_COL * 0.72, 2.05))
 
     ax = axes[0]
@@ -620,6 +622,12 @@ def fig9():
     rel = np.array(d["ceilings"]["circuit"]["400.0"]["relative_total"])
     ax.plot(counts, rel / counts, ":", color=C_POOL, lw=1.2,
             label="pooled divisor,\n0.4 mm")
+    for amp, ls in ((100.0, "-"), (300.0, "--")):
+        rr = [r for r in dn["channels"] if r["pitch_um"] == 400.0
+              and r["amp_ua"] == amp]
+        ax.plot([r["n"] for r in rr], [r["efficiency"] for r in rr], ls,
+                marker="o", color=C_AWAKE, ms=2.0, lw=1.1,
+                label="dense, 0.4 mm" if amp == 100 else None)
     ax.axhline(1.0, color="k", lw=0.6, ls=":")
     ax.set_xscale("log")
     ax.set_ylim(0, 1.3)
@@ -634,12 +642,21 @@ def fig9():
         rr = [r for r in e["charge"] if r["pitch_um"] == pitch]
         ax.plot([1] + [r["n"] for r in rr], [0.0] + [r["delta_k"] for r in rr],
                 "-" + mk, color=C_BIO, ms=2.6, lw=1.2,
-                label=f"measured parts, {pitch/1000:g} mm")
+                label=f"calibrated, {pitch/1000:g} mm")
         rows = [r for r in d["shannon"]["by_pitch"][str(pitch)]
                 if r.get("delta_k") is not None]
         ax.plot([r["n"] for r in rows], [r["delta_k"] for r in rows],
                 "--" + mk, color=C_POOL, ms=2.2, lw=1.0, mfc="white",
                 label=f"pooled divisor, {pitch/1000:g} mm")
+        rr = [r for r in dn["charge"] if r["pitch_um"] == pitch]
+        ok = [r for r in rr if r["delta_k"] is not None]
+        ax.plot([1] + [r["n"] for r in ok], [0.0] + [r["delta_k"] for r in ok],
+                "-" + mk, color=C_AWAKE, ms=2.6, lw=1.2,
+                label=f"dense, {pitch/1000:g} mm")
+        for r in rr:
+            if r["delta_k"] is None:   # beyond the search's 20 mA, a lower bound
+                ax.plot(r["n"], 2 * np.log10(20000.0 / r["base_ua"]), "^",
+                        color=C_AWAKE, ms=3.4, mfc="white")
     ax.set_xscale("log")
     ax.set_xlabel("electrodes driven")
     ax.set_ylabel("increase in Shannon $k$")
@@ -753,7 +770,6 @@ def fig12():
     c = load("v2_awake_cells.json")
     hu = load("v2_awake_human.json")
     pr = load("v2_awake_pairs.json")["rows"]
-    C_AWAKE = "#1b7837"   # green, so it is not read as the pooled divisor
     fig, axes = plt.subplots(2, 2, figsize=(TWO_COL * 0.86, 4.1))
     mids = np.array([50.0, 150.0, 250.0, 400.0])
 

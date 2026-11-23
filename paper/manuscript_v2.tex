@@ -99,12 +99,16 @@ Cortical Visual Prostheses}
     300~\uA{} reaches 33 to 50\%. Which end holds depends on what fraction
     of the responding cells an electrode drives directly. It peaks at the
     shortest separation in all nineteen parameter variants tested and with
-    dense recruitment. It does not reverse sign with drive, dim the later
-    of two sequential phosphenes, or cap what an array delivers. One hundred
-    electrodes at 400~\um{} pitch deliver 46 times one electrode at
-    300~\uA. Five electrodes change the decoded percept by 12\%, and
-    stimulation programmed as though electrodes were independent keeps its
-    pattern and 91\% of the intended contrast. At the separations of the human
+    dense recruitment, and it never caps what an array delivers. With the
+    calibration it does not reverse sign with drive or dim the later of two
+    sequential phosphenes, one hundred electrodes at 400~\um{} pitch
+    deliver 46 times one electrode at 300~\uA, and stimulation programmed
+    as though electrodes were independent keeps its pattern and 91\% of the
+    intended contrast. Dense recruitment turns the interaction suppressive
+    as drive rises at 0.8 to 1.6~mm, at a current that rises with
+    separation, and cuts the hundred electrodes to 16 to 18 times one.
+    Holding their brightness at that pitch then costs about as much current
+    as under a pooled divisor. At the separations of the human
     surface-electrode data the model predicts at most 6\% interaction even at
     4~mA, too little to explain the changes in phosphene size reported
     there. In a blind volunteer, thresholds for groups of up to sixteen
@@ -114,10 +118,10 @@ Cortical Visual Prostheses}
     at 0.94 of the single threshold for sixteen electrodes against 0.43.
 
     \smallskip
-    \noindent A pooled divisor, the alternative we test against, would
-    reverse sign with drive, cap channel count and dim sequential
-    phosphenes, and its interaction would peak away from the shortest
-    separation. A measurement of interaction at a few separations, with a
+    \noindent A pooled divisor, the alternative we test against, would cap
+    channel count and dim sequential phosphenes, and its interaction would
+    peak away from the shortest separation and reverse sign at a current
+    that falls with separation. A measurement of interaction at a few separations, with a
     standard error of 20 percentage points at each, tells the two apart. At
     moderate currents the sign of the interaction turns on how many
     inhibitory cells an electrode drives directly. Read from the raw cells,
@@ -265,6 +269,15 @@ phenomenological model built around a pooled divisor serves as the
 alternative hypothesis. Its normalisation gain is free, and it shows what
 a cortex that pooled activity across millimetres would do instead, and how
 an experiment could tell the two apart.
+
+We then set the model against raw data it was not built from. The
+responses of 6,694 cells in awake mouse V1 test its recruitment cell by
+cell, and thresholds for groups of Utah electrodes in a blind volunteer
+test what it predicts for an array. The cells move the size of the
+interaction by a factor of about four and decide whether more current can
+make up for it at tight pitch. The thresholds fit the model but cannot yet
+tell it from a perceptual account. We give an experiment
+on an implanted array that can.
 
 \section{Methods}
 
@@ -648,6 +661,9 @@ interaction is suppressive at every current from 10 to 600~\uA{}
 from $-0.4$\% at 100~\uA{} to $+4.2$\% at 600~\uA, as the network's
 facilitation outgrows a vanishing occupancy. A pooled divisor turns from
 facilitatory to suppressive as drive rises (section~\ref{sec:pooled}).
+With dense recruitment the sign at 0.8 to 1.6~mm turns the same way as the
+pooled divisor's, but at a current that rises with separation
+(section~\ref{sec:awake}).
 
 \subsection{What the unmeasured parameters do}
 \label{sec:sensitivity}
@@ -845,6 +861,24 @@ the twelve for both. Between neighbouring electrodes at Utah pitch and
 which end holds depends on what fraction of the cells that respond in
 awake cortex the electrode drives directly.
 
+With dense recruitment the sign does reverse with drive, at intermediate
+separations. On the map and 107~\um{} grid used everywhere else, the signed
+interaction at 1.2~mm turns from facilitatory to suppressive at 230 to
+273~\uA, and at 1.6~mm at 460 to 537~\uA, the lower value in each pair
+when every responder counts as driven. Counting every responder also puts
+a crossover at 0.8~mm, at 55~\uA. At 0.4 and 0.6~mm the interaction is
+suppressive at every current from 10 to 600~\uA{} in both fits. The
+network's facilitation at range is outgrown by an overlap that widens with
+current. Pointwise saturation behaves the same way, and its crossover rises
+with separation because a smaller overlap takes more current to saturate.
+A pooled divisor's falls, from 223~\uA{} at 0.4~mm to 96~\uA{} at 3.2~mm
+(section~\ref{sec:pooled}). A reversal alone therefore no longer separates
+the two models. The direction the crossover moves with separation still
+does, and so does the peak. It stays at the shortest separation in both
+fits and falls monotonically from there, to a tenth of its 0.4~mm value by
+2.2--2.3~mm at 100~\uA{} and 3.2--3.7~mm at 300 and 600~\uA, against
+2.4--2.6~mm for the calibration.
+
 \subsection{The human multi-electrode data}
 \label{sec:human}
 
@@ -981,7 +1015,7 @@ but it cannot tell occupancy in cortex from summation in perception.
 Section~\ref{sec:experiments} gives a measurement on the same array that
 can.
 
-\subsection{Arrays have no ceiling}
+\subsection{Arrays have no ceiling, but tight pitch has a price}
 \label{sec:arrays}
 
 Delivered output grows in proportion to the number of electrodes, and its
@@ -1004,12 +1038,30 @@ needs no extra current at 0.8~mm pitch, with $k$ rising by at most 0.03 up
 to $N=64$ (figure~\ref{fig:f9}(b)). At 400~\um{} pitch it needs 0.78~mA at
 $N=16$ and 1.68~mA at $N=64$, raising $k$ by 0.8 and 1.5. Against a
 criterion usually placed near $k < 1.5$--$2.0$ that is a real cost at the
-tightest pitch, but current can pay it. The pooled divisor needed 5.5~mA
+tightest pitch, but with the calibration current can pay it. The pooled divisor needed 5.5~mA
 at $N=16$ at that pitch, and no current up to 200~mA held the target at
 $N=64$. Absolute $k$ depends on electrode area and is not given here,
 since Shannon's form was derived for macroelectrodes and microelectrode
 arrays are ordinarily held to a charge-density ceiling instead. The shift
 is the part that does not depend on the device.
+
+Dense recruitment takes most of that margin away (figure~\ref{fig:f9}). At
+400~\um{} pitch and 300~\uA{} the ratio falls to 0.16 at $N=100$ when every
+responder counts as driven and 0.18 when only short-latency ones do, so a
+hundred electrodes deliver 16 to 18 times one electrode, between the
+calibration's 46 and the pooled divisor's 3.9. Output still grows with
+$N$, so there is still no ceiling, but holding per-channel output now
+costs about what it costs under the pooled divisor. At 400~\um{} it needs
+4.5 to 5.5~mA at $N=16$, raising $k$ by 2.4 to 2.5. At $N=64$ the
+short-latency fit needs 16~mA, raising $k$ by 3.5, and the full refit is
+still at 92\% of the target at 20~mA. We stopped the search there, before
+the initiation radius reaches the edge of the simulated sheet. At
+800~\um{} pitch, where the calibration needs no extra current, dense
+recruitment needs 1.5 to 2.1~mA at $N=16$ and 6.4 to 8.7~mA at $N=64$. At
+1.6~mm pitch the ratio stays above one with every recruitment tested.
+Whether current can pay for tight pitch therefore depends on the directly
+driven fraction, as the size of the interaction does, and spacing pays for
+it with every recruitment.
 
 \subsection{Sequential stimulation}
 \label{sec:sequence}
@@ -1026,7 +1078,13 @@ In the measured-parts model a second phosphene, fired after the first at
 delays from 0 to 300~ms, stays within 3.5\% of its brightness alone at
 0.8 and 1.6~mm and at 100 or 300~\uA, with or without a slow inhibitory
 component (figure~\ref{fig:f10}(a)). There is little suppression at the
-second electrode for a delay to escape. The model is not contradicted by
+second electrode for a delay to escape. With dense recruitment nearly
+every excitatory cell at the second tip is driven directly, at 100 as at
+300~\uA, and the rate there is held where the drive sets it. The second
+phosphene then stays at its brightness alone to within 0.01\% at every
+delay. That shows only that recruitment carries nothing from one train to
+the next. A readout at a saturated tip cannot see the network, so the
+dense model does not test the sequence result. The model is not contradicted by
 the later-is-brighter effect, and it does not explain it either. Attention,
 decision bias in a forced-choice comparison and adaptation on longer time
 scales are all outside a forward model of cortical activation. A pooled
@@ -1106,8 +1164,10 @@ above it, from $+70$\% at the lowest drives to $-38$\% at the highest
 \emph{rises} with separation, from 144~\uA{} at 0.4~mm to 969~\uA{} at
 2.4~mm, since a shrinking overlap takes more drive to saturate
 (figure~\ref{fig:f11}(c)). No gain has to be known to see which way that
-slope runs. The measured-parts model has no crossover of this kind at any
-separation.
+slope runs. With the calibration the measured-parts model has no
+crossover of this kind at any separation. With dense recruitment it has one
+from 0.8 to 1.6~mm, rising with separation from 55 to 460~\uA, the slope of
+pointwise saturation (section~\ref{sec:awake}).
 
 \textit{It sets a sequential delay.} Give the pool a time constant,
 $\tau\,\dot p = -p + P$, and read out the gain $1/(s^n + p)$ at an
@@ -1169,11 +1229,15 @@ it will need direct measurement of activity in early visual areas
 
 \begin{table*}[t]
 \centering
-\caption{What each hypothesis predicts. Measured-parts values are for the
-  calibrated model, with the range across the nineteen variants of
-  table~\ref{tab:t4} in brackets where it was tracked. The structural
-  result holds in both, since both nonlinearities of the measured-parts
-  model act on the combined input.}
+\caption{What each hypothesis predicts. The calibrated column gives the
+  range across the nineteen variants of table~\ref{tab:t4} in brackets
+  where it was tracked. The dense column refits recruitment to every cell
+  that responds in awake cortex (section~\ref{sec:awake}), an upper bound
+  on occupancy, on the same grid and map. Not run marks predictions
+  computed with the calibration only. Searches for the current that holds
+  brightness stop at 20~mA for the measured parts and 200~mA for the
+  pooled divisor. The structural result holds in all three, since both
+  nonlinearities of the measured-parts model act on the combined input.}
 \label{tab:t5}
 \small
 \input{tables/comparison.tex}
@@ -1191,13 +1255,19 @@ only once. The network normalises, and its surround suppression comes
 from that, but at the level of what an electrode pair or an array delivers
 its share is small, and at intermediate range it facilitates.
 
-The consequences are mostly reassuring for devices (table~\ref{tab:t5}).
-Interaction is a few percent at the currents intracortical devices use,
-largest between neighbouring electrodes and gone within a few
-millimetres. It does not flip sign with drive, penalise sequences or cap
-an array. Where it is large, at 400~\um{} pitch and 300~\uA, current
-recovers the loss at a modest charge cost. A pooled divisor would make
-each of those statements false. We take the measured-parts model as the
+How reassuring this is for devices depends on the directly driven
+fraction (table~\ref{tab:t5}). With the calibration, interaction is a few
+percent at the currents intracortical devices use, largest between
+neighbouring electrodes and gone within a few millimetres. It does not
+flip sign with drive, penalise sequences or cap an array, and where it is
+large, at 400~\um{} pitch and 300~\uA, current recovers the loss at a
+modest charge cost. With dense recruitment it is about four times larger
+between neighbouring electrodes at 100~\uA, it turns suppressive with
+drive at intermediate range, and at 400~\um{} pitch current recovers the
+loss only at several milliamps. Two things hold under both. Interaction
+peaks at the shortest separation, and the current at which it turns
+suppressive rises with separation wherever it turns. A pooled divisor
+would make both false. We take the measured-parts model as the
 better estimate of what cortex does, because it was not given the freedom
 to produce any particular answer. The pooled divisor stays a hypothesis
 worth testing, because its predictions are distinct and some of the human
@@ -1223,7 +1293,7 @@ cortex would fix it for the case that matters.
 
 \textbf{What fraction of the cells that respond in awake cortex does an
 electrode drive directly?} This sets the size of the interaction between
-neighbouring electrodes. Counting every responder as driven puts it at
+neighbouring electrodes, and whether current can pay for tight pitch. Counting every responder as driven puts it at
 $-12.5$\% at 100~\uA{} and 0.4~mm, and the calibration at $-2.9$\%
 (section~\ref{sec:awake}). Imaging fast enough to resolve the first few
 milliseconds after a pulse, or with synaptic transmission blocked near the
@@ -1246,7 +1316,8 @@ it tells cortex from perception (section~\ref{sec:fernandez}).
 brightness at four or five separations from 0.4 to 3~mm at a fixed
 suprathreshold current separates the two hypotheses. The measured-parts
 model peaks at the shortest separation in every variant tested and keeps
-a tenth of that peak by about 2.5~mm. A pooled divisor has a maximum in
+a tenth of that peak by about 2.5~mm with the calibration and by 2.2 to
+3.7~mm with dense recruitment. A pooled divisor has a maximum in
 the interior, near 1.5~mm, at every gain we tried.
 An interior maximum would mean that something in cortex pools more widely
 than the published connectivity allows.
@@ -1272,9 +1343,11 @@ randomised.
 \textbf{Amplitude against delay, in one session.} Take one electrode pair
 and sweep amplitude across a decade together with inter-electrode delay
 from zero to a few hundred milliseconds. A pooled divisor predicts a sign
-reversal at some amplitude and a sequential advantage that switches on
-above it. The measured-parts model predicts neither, with interaction that
-stays suppressive at short range and a second phosphene within a few
+reversal at every separation tested, at a current that falls with
+separation, and a sequential advantage that switches on above it. The
+measured-parts model predicts no reversal at short range, where interaction
+stays suppressive, and a reversal at 0.8 to 1.6~mm only if recruitment is
+dense. With the calibration it predicts a second phosphene within a few
 percent of its brightness alone at every delay. A drive-dependent optimal
 delay would favour the pooled divisor. A flat response would favour the
 measured parts and leave the clinical sequential advantage
@@ -1284,9 +1357,10 @@ activation.
 \textbf{Ensemble brightness.} Drive $N$ electrodes that each produce
 brightness $B$. A pooled divisor predicts that reported brightness falls
 further below $NB$ as $N$ grows and that more current does not close the
-gap. The measured-parts model predicts a fixed fraction of $NB$, close to
-one at 0.8~mm pitch and clinical currents, and a deficit at 400~\um{} that
-current does close.
+gap. The measured-parts model predicts a fraction of $NB$ that changes
+little with $N$ at 0.8~mm pitch and 100~\uA, within 12\% of one with
+either recruitment. Whether more current closes the deficit at 400~\um{}
+depends on how dense recruitment is.
 
 \textbf{Is the lost phosphene lost in cortex, or after it?} For pairs
 where one of two phosphenes goes unreported, measure trial-to-trial
@@ -1298,8 +1372,8 @@ This is the cheapest of these experiments.
 
 \subsection{Implications for device programming}
 
-At the currents and pitches of present devices, the measured-parts model
-says an encoder can go on assuming independence. Stimulation programmed
+With the calibration, at the currents and pitches of present devices,
+the measured-parts model says an encoder can go on assuming independence. Stimulation programmed
 that way keeps the pattern and loses about a tenth of the intended
 contrast, and asking for brightness under the full model wins back about
 half of that loss with more current. The assumption costs most where
@@ -1316,7 +1390,11 @@ that assumes independence overestimates the summed output of two
 neighbouring Utah electrodes by an eighth at 100~\uA{} and by nearly a
 quarter at 300~\uA{} (section~\ref{sec:awake}). Driving electrodes at
 the same moment only when they are 1.2~mm or more apart keeps the signed
-error under 4\% at 100~\uA{} in both models.
+error under 4\% at 100~\uA{} in both models. Dense recruitment also puts
+a price on tight pitch. Holding the brightness of sixteen electrodes
+0.4~mm apart at that of one at 300~\uA{} would take 4.5 to 5.5~mA each,
+so at that pitch an encoder would have to accept dimmer phosphenes or
+drive fewer neighbouring electrodes at once.
 
 The modelling corollary does not depend on which hypothesis is right. Any
 forward model meant to capture electrode interaction needs a nonlinearity
@@ -1336,6 +1414,11 @@ range.
   those cells counts every responder as driven directly, which overstates
   occupancy. The truth lies between, and so does the interaction between
   neighbouring electrodes (section~\ref{sec:awake}).
+\item \textbf{Some predictions were made with the calibration only.} The
+  decoded percepts, the encoder comparison and the reach at
+  surface-electrode currents use calibrated recruitment
+  (table~\ref{tab:t5}). Dense recruitment enlarges the interaction they rest
+  on, and we have not rerun them with it.
 \item \textbf{The sign at moderate currents is not determined.} It depends
   on the direct recruitment of inhibitory cells. Read from the raw cells,
   the ratio that sets it lies between 1.00 and 1.98 at 20~\uA, wide
@@ -1415,18 +1498,24 @@ about ten times more cells than the calibration assumed, if every cell
 that responds is driven directly. Between neighbouring electrodes at
 100~\uA{} the interaction therefore lies between 3 and 12\% of the
 summed response, and at 300~\uA{} and 400~\um{} it reaches tens of
-percent. It is largest at the
-shortest separation and falls to a tenth of that by about 2.5~mm. The more
-dramatic consequences of a pooled divisor, a sign that reverses with
-drive, a sequential penalty and a ceiling on what an array can deliver,
-do not appear, and neither model reaches the separations at which the
-human size changes were measured. Whether the interaction at moderate
+percent. It is largest at the shortest separation and falls to a tenth of
+that within 2.2 to 3.7~mm. With the calibration the more dramatic
+consequences of a pooled divisor, a sign that reverses with drive, a
+sequential penalty and a ceiling on what an array can deliver, do not
+appear. With dense recruitment the sign does reverse with drive between
+0.8 and 1.6~mm, and holding the brightness of an array 0.4~mm apart costs
+milliamps per electrode, though output still grows with the number of
+electrodes. The shape still tells the models apart. The peak stays at the
+shortest separation, and the current at which the sign turns rises with
+separation where a pooled divisor's falls. Neither model reaches the
+separations at which the human size changes were measured. Whether the interaction at moderate
 currents is suppressive or facilitatory turns on how many inhibitory
 cells an electrode drives directly. Read from the raw cells, that number
 sits where the paired-electrode data in mouse need it, but not tightly
 enough to fix the sign. Two measurements would now settle most of what is
 open. One is the fraction of the cells responding in awake cortex that an
-electrode drives directly. The other is the threshold for spaced groups of
+electrode drives directly. It sets both the size of the interaction and
+its price at tight pitch. The other is the threshold for spaced groups of
 electrodes on an array already implanted in a person, which tells
 occupancy in cortex from summation in perception.
 
@@ -1607,11 +1696,16 @@ relative to the sum of the same electrodes driven alone, in the model
 built from measured parts at three pitches, at 100~\uA{} (solid) and
 300~\uA{} (dashed). The ratio levels off without falling as $1/N$. The
 pooled divisor at 400~\um{} pitch (orange, dotted) falls toward its
-ceiling. (b) Increase in Shannon's $k = \log_{10}D + \log_{10}Q$ needed to
-hold per-channel output at its single-electrode value from a 300~\uA{}
-reference. Because charge and charge density both scale with amplitude,
-the increase does not depend on electrode area or pulse width. Curves stop
-where the required amplitude exceeds 200~mA.}
+ceiling. Recruitment refitted to every responding cell in awake cortex
+(green, 400~\um) falls further but still grows in total. (b) Increase in
+Shannon's $k = \log_{10}D + \log_{10}Q$ needed to hold per-channel output
+at its single-electrode value from a 300~\uA{} reference, for the
+calibrated (blue) and refitted (green) measured parts. Because charge and
+charge density both scale with amplitude, the increase does not depend on
+electrode area or pulse width. The pooled divisor's curves stop where the
+required amplitude exceeds 200~mA. The open triangle marks the refit at
+$N=64$ and 400~\um, still short of the target at 20~mA, where the search
+stops, so its increase is at least 3.6.}
 \label{fig:f9}
 \end{figure}
 
